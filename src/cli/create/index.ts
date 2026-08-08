@@ -2,8 +2,17 @@ import * as fs from "fs";
 import * as path from "path";
 import prompts from "prompts";
 import write from "./write.js";
+import { frameworkDir } from "../../core/paths.js";
+
+function getPackageJson() {
+  const packageJsonPath = path.join(frameworkDir, "package.json");
+  return JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+}
 
 function scaffoldProject(dest: string, name: string): void {
+  const PackageJson = getPackageJson();
+  const reactVersion = PackageJson.dependencies?.["react"] || "19.2.8";
+
   write(
     path.join(dest, "package.json"),
     JSON.stringify(
@@ -17,18 +26,20 @@ function scaffoldProject(dest: string, name: string): void {
           start: "xanos start",
         },
         dependencies: {
-          xanos: "^0.1.0",
-          react: "^18.0.0",
-          "react-dom": "^18.0.0",
-          "react-rock": "^3.2.23",
-          "@xanui/ui": "^1.2.23",
-          "@xanui/core": "^1.3.36",
-          "@xanui/icons": "^1.1.14",
+          xanos: `^${PackageJson.version}`,
+          react: `^${reactVersion}`,
+          "react-dom": `^${reactVersion}`,
+          "react-rock": PackageJson["react-rock"],
+          "@xanui/ui": PackageJson["@xanui/ui"],
+          "@xanui/core": PackageJson["@xanui/core"],
+          "@xanui/icons": PackageJson["@xanui/icons"],
+          "better-sqlite3": PackageJson["better-sqlite3"],
+          xansql: PackageJson["xansql"],
         },
         devDependencies: {
           typescript: "^5.4.0",
-          "@types/react": "^18.0.0",
-          "@types/react-dom": "^18.0.0",
+          "@types/react": `^${reactVersion}`,
+          "@types/react-dom": `^${reactVersion}`,
         },
       },
       null,
@@ -93,6 +104,21 @@ import "./apps/main/index.tsx"
   );
 }
 
+const installDeps = async (dest: string): Promise<void> => {
+  console.log(`\nInstalling dependencies...`);
+  const { spawn } = await import("child_process");
+  const child = spawn("npm", ["install"], {
+    cwd: dest,
+    stdio: "inherit",
+  });
+  child.on("close", (code) => {
+    if (code !== 0) {
+      console.error(`npm install failed with exit code ${code}`);
+      process.exit(code || 1);
+    }
+  });
+};
+
 export default async function create(): Promise<void> {
   const response = await prompts([
     {
@@ -116,8 +142,5 @@ export default async function create(): Promise<void> {
 
   console.log(`\nScaffolding Xanos project at ./${projectName} ...`);
   scaffoldProject(dest, projectName);
-  console.log(`\nDone! Next steps:\n`);
-  console.log(`  cd ${projectName}`);
-  console.log(`  npm install`);
-  console.log(`  npm run dev\n`);
+  await installDeps(dest);
 }
