@@ -1,3 +1,7 @@
-.os
 node_modules/
 package-lock.json
+dist
+.os
+/apps
+xanos.config.ts
+startup.ts
