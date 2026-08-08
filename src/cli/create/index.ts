@@ -14,6 +14,7 @@ function scaffoldProject(dest: string, name: string): void {
         scripts: {
           dev: "xanos dev",
           build: "xanos build",
+          start: "xanos start",
         },
         dependencies: {
           xanos: "^0.1.0",
@@ -44,10 +45,10 @@ function scaffoldProject(dest: string, name: string): void {
   write(
     path.join(dest, "xanos.config.ts"),
     `import type { XanosConfig } from "xanos/core";
+import SqliteDialect from "xansql/dialects/Sqlite";
 const config: XanosConfig = {
-  port: 3000,
-  publicDir: "public",
-  outDir: ".xanos",
+  database: SqliteDialect("db.sqlite"),
+  files: "./public/uploads",
 };
 export default config;
   `,
@@ -72,7 +73,7 @@ export default config;
       2,
     ),
   );
-
+  write(path.join(dest, "public", "uploads", "index.html"), ``);
   write(
     path.join(dest, "apps", "main", "index.tsx"),
     `export default function App() {
@@ -87,7 +88,7 @@ export default config;
   write(
     path.join(dest, "startup.ts"),
     `import "xanos/startup"
-  import "./apps/main/index.tsx"
+import "./apps/main/index.tsx"
   `,
   );
 }
@@ -118,5 +119,5 @@ export default async function create(): Promise<void> {
   console.log(`\nDone! Next steps:\n`);
   console.log(`  cd ${projectName}`);
   console.log(`  npm install`);
-  console.log(`  npx xanos dev\n`);
+  console.log(`  npm run dev\n`);
 }

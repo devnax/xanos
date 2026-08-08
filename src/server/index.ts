@@ -57,6 +57,7 @@ const server = async ({ port = 3000, development }: ServerOption) => {
   app.use(`/startup.js`, express.static(".os/startup.js"));
   app.use(`/assets`, express.static(".os/assets"));
   app.use(`/chunks`, express.static(".os/chunks"));
+  app.use(express.static("public"));
 
   if (development) {
     await initialDevServer();

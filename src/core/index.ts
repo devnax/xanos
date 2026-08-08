@@ -1,15 +1,14 @@
+import type { XansqlDialect } from "xansql";
+
+type FilePath = string;
+export type S3FilesConfig = {
+  bucket: string;
+  region: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+};
+
 export interface XanosConfig {
-  databaseUrl?: string;
-  media?: {
-    client: "s3" | "local";
-    s3?: {
-      accessKeyId: string;
-      secretAccessKey: string;
-      region: string;
-      bucket: string;
-    };
-    local?: {
-      directory: string;
-    };
-  };
+  database: XansqlDialect;
+  files: FilePath | S3FilesConfig;
 }
