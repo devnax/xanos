@@ -1,9 +1,9 @@
 import server from "../../server/index.js";
 import fs from "fs";
-import logger, { printServerInfo } from "../../core/logger.js";
+import { printServerInfo } from "../../core/logger.js";
 import path from "path";
 import { frameworkDir } from "../../core/paths.js";
-import { loadConfig } from "../../core/config.js";
+import setup from "../../core/setup.js";
 
 const dev = async (_str: string, options: { port?: number }) => {
   const port = options?.port ?? 3000;
@@ -11,7 +11,7 @@ const dev = async (_str: string, options: { port?: number }) => {
   const packageJson = fs.readFileSync(packageFilePath, "utf-8");
   const packageData = JSON.parse(packageJson);
   const version = packageData.version ?? "0.0.0";
-
+  await setup();
   server({
     port,
     development: true,

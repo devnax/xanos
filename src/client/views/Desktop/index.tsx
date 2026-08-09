@@ -35,7 +35,7 @@ const Desktop = ({ os }: { os: Xanos }) => {
 
   return (
     <Stack width="100%" height="100%" onContextMenu={onContextMenu}>
-      <Text variant="h5">Desktop</Text>
+      <Text variant="h5">Dashboard</Text>
     </Stack>
   );
 };

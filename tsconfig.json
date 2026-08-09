@@ -9,9 +9,10 @@
         "allowSyntheticDefaultImports": true,
         "skipLibCheck": true,
         "verbatimModuleSyntax": true,
-        "noEmit": true,
-        "rootDir": "src",
-        "outDir": "dist"
+        "declaration": true,
+        "sourceMap": true,
+        "rootDir": "./src",
+        "outDir": "./dist"
     },
     "include": [
         "src",
