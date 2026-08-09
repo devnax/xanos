@@ -6,8 +6,8 @@ import Text from "@xanui/ui/Text";
 import WidgetsOutlined from "@xanui/icons/WidgetsOutlined";
 import RefreshOutlined from "@xanui/icons/RefreshOutlined";
 import StyleOutlined from "@xanui/icons/StyleOutlined";
-import WidgetDrawer from "../WidgetDrawer";
-import Xanos from "../../Xanos.js";
+import WidgetDrawer from "../WidgetDrawer/index.js";
+import Xanos from "../../classes/Xanos/index.js";
 
 const Desktop = ({ os }: { os: Xanos }) => {
   const onContextMenu = useContextMenu({

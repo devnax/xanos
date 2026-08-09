@@ -1,6 +1,6 @@
 import Layers from "@xanui/icons/Layers";
 import IconButton from "@xanui/ui/IconButton";
-import Xanos from "../../../Xanos.js";
+import Xanos from "../../../classes/Xanos/index.js";
 import RecentApps from "../../RecentApps/index.js";
 
 const RecentAppsButton = ({ os }: { os: Xanos }) => {

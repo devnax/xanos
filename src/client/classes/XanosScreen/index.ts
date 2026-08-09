@@ -1,6 +1,6 @@
 import createStore from "react-rock";
 import type { StoreRID } from "react-rock/types";
-import Xanos from "../../Xanos.js";
+import Xanos from "../Xanos/index.js";
 import { XanosScreenAppSchema, XanosScreenSchema } from "./schema";
 
 export type XanosScreenProps = {

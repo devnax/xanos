@@ -1,7 +1,7 @@
 import IconButton from "@xanui/ui/IconButton";
 import React from "react";
 import CircleOutlined from "@xanui/icons/CircleOutlined";
-import Xanos from "../../../Xanos.js";
+import Xanos from "../../../classes/Xanos/index.js";
 
 const HomeButton = ({ os }: { os: Xanos }) => {
   return (

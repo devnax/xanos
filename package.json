@@ -34,7 +34,8 @@
   },
   "scripts": {
     "dev": "tsc --watch --preserveWatchOutput",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node ./dist/bin/xanos.js"
   },
   "keywords": [],
   "author": "Naxrul Ahmed",

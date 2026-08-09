@@ -1,7 +1,7 @@
 import Stack from "@xanui/ui/Stack";
 import CircleProgress from "@xanui/ui/CircleProgress";
 import { useState } from "react";
-import Xanos from "../../Xanos.js";
+import Xanos from "../../classes/Xanos/index.js";
 import RenderScreen from "../OSRoot/RenderScreen.js";
 import { Iframe, Transition } from "@xanui/core";
 import Text from "@xanui/ui/Text";

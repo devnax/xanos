@@ -1,4 +1,4 @@
-import Xanos from "../../Xanos.js";
+import Xanos from "../../classes/Xanos/index.js";
 import Stack from "@xanui/ui/Stack";
 import type { StoreRID } from "react-rock";
 

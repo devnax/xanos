@@ -1,6 +1,6 @@
 import Stack from "@xanui/ui/Stack";
 import React, { useState } from "react";
-import Xanos from "../../Xanos.js";
+import Xanos from "../../classes/Xanos/index.js";
 import Box from "@xanui/ui/Box";
 import Menu from "@xanui/ui/Menu";
 import Text from "@xanui/ui/Text";

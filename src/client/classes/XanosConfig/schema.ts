@@ -3,6 +3,7 @@ import { xv } from "xanv";
 
 export const XanosConfigSchema = {
   renderDesktop: xv.any().nullable().default(null),
+  isMobile: xv.boolean().default(false),
   allow: xv
     .object({
       multitasking: xv.boolean(),
@@ -54,12 +55,12 @@ export const XanosConfigSchema = {
     }),
   dock: xv
     .object({
-      mode: xv.enum(["os", "web", "compact"] as const).default("os"),
+      mode: xv.enum(["os", "web", "compact"] as const),
       placement: xv.enum(["left", "right", "bottom"] as const),
       pinnedApps: xv.array(xv.string()).default([]),
     })
     .default({
-      mode: "os",
+      mode: "web",
       placement: "left",
       pinnedApps: [],
     }),

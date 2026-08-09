@@ -1,5 +1,5 @@
 import createStore from "react-rock";
-import Xanos from "../../Xanos.js";
+import Xanos from "../Xanos/index.js";
 import { XanosAppSchema } from "./schema.js";
 import type { XanosAppProps, XanosAppSchemaProps } from "./schema.js";
 

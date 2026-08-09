@@ -1,31 +1,30 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { AppRoot, createTheme, Transition } from "@xanui/core";
 import Stack from "@xanui/ui/Stack";
-import Xanos from "../../Xanos.js";
+import Xanos from "../../classes/Xanos/index.js";
 import Dock from "../Dock/index.js";
 import Desktop from "../Desktop/index.js";
 import RenderScreen from "./RenderScreen.js";
+import useMobile from "../../hooks/useMobile.js";
 
 export type OSRootProps = {
   os: Xanos;
 };
 const OSRoot = ({ os }: OSRootProps) => {
-  const _theme = os.config.get("theme", true);
-  const dock = os.config.get("dock", true);
+  const dock = os.config.dock;
   const isSide = dock.placement === "left" || dock.placement === "right";
   const DesktopView: any = os.config.get("renderDesktop", false) ?? Desktop;
   const activeScreen = os.screen.getActiveScreen(false);
   const screens = os.screen.getScreens();
+  const isMobile = useMobile();
 
-  const theme = useMemo(() => {
-    return createTheme({
-      name: `xanos-${_theme.mode}`,
-      mode: _theme.mode,
-      colors: {
-        brand: _theme.accentColor as any,
-      },
-    });
-  }, [_theme]);
+  useEffect(() => {
+    if (isMobile) {
+      os.config.set("isMobile", true);
+    } else {
+      os.config.set("isMobile", false);
+    }
+  }, [isMobile]);
 
   let direction: any = "row";
   let width: any = isSide ? "calc(100vw - 52px)" : "100vw";
@@ -47,15 +46,7 @@ const OSRoot = ({ os }: OSRootProps) => {
   }
 
   return (
-    <AppRoot
-      theme={theme}
-      height="100vh"
-      width="100vw"
-      position={"relative"}
-      onContextMenu={(e) => {
-        // e.preventDefault()
-      }}
-    >
+    <Stack>
       <Stack
         height="100%"
         width="100%"
@@ -89,7 +80,7 @@ const OSRoot = ({ os }: OSRootProps) => {
           {screens.map((screen) => (
             <Transition
               key={screen.rid}
-              variant={"zoomOver"}
+              variant={"fade"}
               open={activeScreen?.rid === screen.rid}
               easing="smooth"
               duration={300}
@@ -132,8 +123,26 @@ const OSRoot = ({ os }: OSRootProps) => {
           )}
         </Stack>
       </Stack>
-    </AppRoot>
+    </Stack>
   );
 };
 
-export default OSRoot;
+const Root = ({ os }: OSRootProps) => {
+  const _theme = os.config.get("theme", true);
+  const theme = useMemo(() => {
+    return createTheme({
+      name: `xanos-${_theme.mode}`,
+      mode: _theme.mode,
+      colors: {
+        brand: _theme.accentColor as any,
+      },
+    });
+  }, [_theme]);
+
+  return (
+    <AppRoot theme={theme} height="100vh" width="100vw" position={"relative"}>
+      <OSRoot os={os} />
+    </AppRoot>
+  );
+};
+export default Root;

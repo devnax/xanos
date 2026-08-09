@@ -1,5 +1,4 @@
-import React from "react";
-import Xanos from "../../../Xanos.js";
+import Xanos from "../../../classes/Xanos/index.js";
 import Stack from "@xanui/ui/Stack";
 import RecentAppsButton from "../ActionButton/RecentAppsButton.js";
 import HomeButton from "../ActionButton/HomeButton.js";
@@ -21,7 +20,7 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
     <ListItem
       startIcon={app.icon}
       selected={isActiveApp ? true : false}
-      opacity={isActiveApp ? 1 : 0.7}
+      // opacity={isActiveApp ? 1 : 0.6}
       onClick={() => {
         os.runApp(app.id);
       }}
@@ -49,7 +48,7 @@ const WebDock = ({ os }: { os: Xanos }) => {
       bgcolor="surface.secondary"
       shadow={5}
     >
-      <List variant={"outline"} color={"default"}>
+      <List variant={"ghost"} color={"brand"}>
         {apps.map((app) => (
           <AppIcon key={app.id} app={app} os={os} />
         ))}

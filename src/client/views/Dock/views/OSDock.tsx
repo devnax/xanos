@@ -1,4 +1,4 @@
-import Xanos from "../../../Xanos.js";
+import Xanos from "../../../classes/Xanos/index.js";
 import Stack from "@xanui/ui/Stack";
 import RecentAppsButton from "../ActionButton/RecentAppsButton.js";
 import HomeButton from "../ActionButton/HomeButton.js";
@@ -47,7 +47,7 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
 };
 
 const OSDock = ({ os }: { os: Xanos }) => {
-  const { placement } = os.config.get("dock");
+  const { placement } = os.config.dock;
   const isSide = placement === "left" || placement === "right";
   const apps = os.apps.getApps();
 

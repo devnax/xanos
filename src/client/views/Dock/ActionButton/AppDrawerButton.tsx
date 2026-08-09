@@ -1,7 +1,7 @@
 import IconButton from "@xanui/ui/IconButton";
 import React from "react";
 import Apps from "@xanui/icons/Apps";
-import Xanos from "../../../Xanos.js";
+import Xanos from "../../../classes/Xanos/index.js";
 import AppDrawer from "../../AppDrawer/index.js";
 
 const AppDrawerButton = ({ os }: { os: Xanos }) => {

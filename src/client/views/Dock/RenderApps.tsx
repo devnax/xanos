@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@xanui/ui/Box";
 import Stack from "@xanui/ui/Stack";
-import Xanos from "../../Xanos.js";
+import Xanos from "../../classes/Xanos/index.js";
 
 export type RenderAppsProps = {
   os: Xanos;
@@ -46,7 +46,7 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
 
 const RenderApps = ({ os }: RenderAppsProps) => {
   const apps = os.apps.getApps();
-  const { placement } = os.config.get("dock");
+  const { placement } = os.config.dock;
   const isSide = placement === "left" || placement === "right";
 
   return (
