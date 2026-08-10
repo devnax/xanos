@@ -4,4 +4,5 @@ dist
 .os
 /apps
 xanos.config.ts
-startup.ts
+xanos.startup.ts
+db.sqlite

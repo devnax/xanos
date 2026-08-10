@@ -1,26 +1,56 @@
-import server from "../../server/index.js";
-import fs from "fs";
-import { printServerInfo } from "../../core/logger.js";
 import path from "path";
-import { frameworkDir } from "../../core/paths.js";
-import setup from "../../core/setup.js";
+import chokidar from "chokidar";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "url";
+import logger from "../../core/logger.js";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const filePath = path.join(__dirname, "./server.js");
 
-const dev = async (_str: string, options: { port?: number }) => {
-  const port = options?.port ?? 3000;
-  const packageFilePath = path.join(frameworkDir, "package.json");
-  const packageJson = fs.readFileSync(packageFilePath, "utf-8");
-  const packageData = JSON.parse(packageJson);
-  const version = packageData.version ?? "0.0.0";
-  await setup();
-  server({
-    port,
-    development: true,
+let child: any;
+function start() {
+  child = spawn(process.execPath, [filePath], {
+    stdio: "inherit",
+  });
+}
+
+function restart() {
+  child?.kill();
+  start();
+}
+
+const dev = () => {
+  start();
+  let watcher = chokidar.watch(
+    [`apps`, `xanos.config.ts`, `xanos.startup.ts`],
+    {
+      cwd: process.cwd(),
+      ignoreInitial: true,
+    },
+  );
+
+  watcher.on("all", (event, file) => {
+    const normalized = file.replaceAll("\\", "/");
+    if (
+      normalized.endsWith("/schema.ts") ||
+      normalized.endsWith("/routes.ts") ||
+      normalized.endsWith("xanos.config.ts") ||
+      (event === "unlink" && normalized.endsWith("xanos.startup.ts"))
+    ) {
+      logger.info(`Detected change in ${normalized}. Restarting server...`);
+      restart();
+    }
   });
 
-  printServerInfo({
-    port: port,
-    version: version,
-    env: process.env.NODE_ENV ? [process.env.NODE_ENV] : [],
+  process.on("SIGINT", () => {
+    child?.kill();
+    watcher.close();
+    process.exit(0);
+  });
+
+  process.on("SIGTERM", () => {
+    child?.kill();
+    watcher.close();
+    process.exit(0);
   });
 };
 

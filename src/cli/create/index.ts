@@ -58,7 +58,12 @@ function scaffoldProject(dest: string, name: string): void {
     `import type { XanosConfig } from "xanos/core";
 import SqliteDialect from "xansql/dialects/Sqlite";
 const config: XanosConfig = {
-  database: SqliteDialect("db.sqlite"),
+  database: {
+    engine: "sqlite",
+    sqlite: "db.sqlite",
+    mysql: {},
+    postgres:{}
+  },
   files: "./public/uploads",
 };
 export default config;
@@ -69,16 +74,22 @@ export default config;
     JSON.stringify(
       {
         compilerOptions: {
-          target: "ES2020",
-          module: "ESNext",
-          moduleResolution: "Bundler",
-          jsx: "react-jsx",
-          strict: true,
-          esModuleInterop: true,
+          target: "ES2017",
+          lib: ["dom", "dom.iterable", "esnext"],
+          allowJs: true,
           skipLibCheck: true,
+          strict: true,
+          noEmit: true,
+          esModuleInterop: true,
+          module: "esnext",
+          moduleResolution: "bundler",
+          resolveJsonModule: true,
+          isolatedModules: true,
+          jsx: "react-jsx",
+          incremental: true,
         },
-        include: ["xanos-env.d.ts", "**/*.ts", "**/*.tsx"],
-        exclude: ["node_modules", ".os"],
+        include: ["apps", ".os"],
+        exclude: ["node_modules"],
       },
       null,
       2,

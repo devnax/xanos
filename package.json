@@ -23,13 +23,17 @@
       "import": "./dist/server/index.js",
       "require": "./dist/server/index.js"
     },
+    "./server/database": {
+      "import": "./dist/server/database.js",
+      "require": "./dist/server/database.js"
+    },
     "./client": {
       "import": "./dist/client/index.js",
       "require": "./dist/client/index.js"
     },
-    "./database": {
-      "import": "./dist/database/index.js",
-      "require": "./dist/database/index.js"
+    "./client/database": {
+      "import": "./dist/client/database/index.js",
+      "require": "./dist/client/database/index.js"
     }
   },
   "scripts": {
@@ -46,11 +50,13 @@
     "@xanui/icons": "^1.1.14",
     "@xanui/ui": "^1.2.24",
     "better-sqlite3": "^13.0.3",
+    "chokidar": "^5.0.0",
     "commander": "^15.0.0",
     "embla-carousel-react": "^8.6.0",
     "express": "^5.2.1",
-    "figlet": "^1.11.4",
     "jiti": "^2.7.0",
+    "mysql2": "^3.23.3",
+    "pg": "^8.23.0",
     "picocolors": "^1.1.1",
     "prompts": "^2.4.2",
     "react": "^19.2.8",
@@ -58,6 +64,7 @@
     "react-grid-layout": "^2.2.4",
     "react-rock": "^3.2.23",
     "react-state-bucket": "^1.2.18",
+    "securequ": "^1.1.31",
     "tslib": "^2.8.1",
     "vite": "^8.1.5",
     "xansql": "^1.1.27",
@@ -66,12 +73,10 @@
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^26.1.2",
+    "@types/pg": "^8.21.0",
     "@types/prompts": "^2.4.9",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "rolldown": "^1.2.1",
-    "tsup": "^8.5.1",
-    "tsx": "^4.23.1",
     "typescript": "^7.0.2"
   }
 }

@@ -1,24 +1,41 @@
 import { Xansql, type XansqlFileMeta } from "xansql";
-import MysqlDialect from "xansql/dialects/Mysql";
 import { XansqlBridgeDialect } from "xansql/dialects/Bridge";
-import { loadConfig } from "../core/config";
+import { UserModel } from "./schema/user.js";
+declare const __XANOS_CLIENT__: boolean;
 
-let dialect;
-let file;
+let dialect: any;
+let file: any;
 
-if (typeof window === "undefined") {
-  dialect = MysqlDialect({
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT),
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  });
-
+if (!__XANOS_CLIENT__) {
   const fs = await import("fs");
   const path = await import("path");
-  let dir = "public/uploads";
+  const { loadConfig } = await import("../core/config.js");
+  const { default: MysqlDialect } = await import("xansql/dialects/Mysql");
+  const { default: SqliteDialect } = await import("xansql/dialects/Sqlite");
+  const { default: PostgresDialect } = await import("xansql/dialects/Postgres");
+  const { default: logger } = await import("../core/logger.js");
 
+  const config = await loadConfig();
+  if (!config.database[config.database.engine]) {
+    logger.error(
+      `Database configuration for engine "${config.database.engine}" is missing in xanos.config.ts`,
+    );
+    process.exit(1);
+  }
+
+  switch (config.database.engine) {
+    case "sqlite":
+      dialect = SqliteDialect(config.database.sqlite as any);
+      break;
+    case "mysql":
+      dialect = MysqlDialect(config.database.mysql as any);
+      break;
+    case "postgres":
+      dialect = PostgresDialect(config.database.postgres as any);
+      break;
+  }
+
+  let dir = "public/uploads";
   file = {
     upload: async (chunk: Uint8Array, filemeta: XansqlFileMeta) => {
       const uploadDir = path.join(process.cwd(), dir);
@@ -42,15 +59,12 @@ if (typeof window === "undefined") {
   file = client.file;
 }
 
-const database = async () => {
-  const db = new Xansql({
-    // debug: true,
-    dialect,
-    file,
-  });
-  return db;
-};
+const database = new Xansql({
+  // debug: true,
+  dialect,
+  file,
+});
 
 export default database;
 
-// export const User = database.model(UserModel);
+export const User = database.model(UserModel);

@@ -1,3 +1,4 @@
+import React from "react";
 import OSRoot from "../../views/OSRoot";
 import XanosConfig from "../XanosConfig";
 import XanosApps from "../XanosApps";

@@ -1,4 +1,6 @@
-import type { XansqlDialect } from "xansql";
+import type { XansqlDialect, XansqlDialectEngine } from "xansql";
+import type { PoolOptions } from "mysql2";
+import { PoolConfig } from "pg";
 
 type FilePath = string;
 export type S3FilesConfig = {
@@ -9,6 +11,11 @@ export type S3FilesConfig = {
 };
 
 export interface XanosConfig {
-  database: XansqlDialect;
+  database: {
+    engine: XansqlDialectEngine;
+    sqlite?: string;
+    mysql?: PoolOptions;
+    postgres?: PoolConfig;
+  };
   files: FilePath | S3FilesConfig;
 }
