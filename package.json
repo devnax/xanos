@@ -19,27 +19,22 @@
       "import": "./dist/core/index.js",
       "require": "./dist/core/index.js"
     },
+    "./database": {
+      "import": "./dist/database/index.js",
+      "require": "./dist/database/index.js"
+    },
     "./server": {
       "import": "./dist/server/index.js",
       "require": "./dist/server/index.js"
     },
-    "./server/database": {
-      "import": "./dist/server/database.js",
-      "require": "./dist/server/database.js"
-    },
     "./client": {
       "import": "./dist/client/index.js",
       "require": "./dist/client/index.js"
-    },
-    "./client/database": {
-      "import": "./dist/client/database/index.js",
-      "require": "./dist/client/database/index.js"
     }
   },
   "scripts": {
     "dev": "tsc --watch --preserveWatchOutput",
-    "build": "tsc",
-    "start": "node ./dist/bin/xanos.js"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "Naxrul Ahmed",

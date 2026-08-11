@@ -2,16 +2,16 @@ import express, { Router } from "express";
 import { scanProject } from "../core/scanner.js";
 import _import from "../core/import.js";
 
-const scan = scanProject();
-
 const loader = async (app: express.Express) => {
+  const scan = scanProject();
+
   for (let { files, id } of scan) {
-    if (files.routes) {
-      const imp = (await _import(files.routes)) as {
+    if (files.api) {
+      const imp = (await _import(files.api)) as {
         default: Record<string, Router>;
       };
       if (imp.default instanceof Router) {
-        app.use(`/app/${id}`, imp.default as unknown as Router);
+        app.use(`/api/${id}`, imp.default as unknown as Router);
       }
     }
 
@@ -20,4 +20,5 @@ const loader = async (app: express.Express) => {
     }
   }
 };
+
 export default loader;

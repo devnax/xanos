@@ -1,12 +1,19 @@
 import { Xansql, type XansqlFileMeta } from "xansql";
 import { XansqlBridgeDialect } from "xansql/dialects/Bridge";
 import { UserModel } from "./schema/user.js";
+
 declare const __XANOS_CLIENT__: boolean;
+
+const isClient =
+  typeof __XANOS_CLIENT__ !== "undefined"
+    ? __XANOS_CLIENT__
+    : typeof window !== "undefined";
 
 let dialect: any;
 let file: any;
+export const BASE_PATH = "/query";
 
-if (!__XANOS_CLIENT__) {
+if (!isClient) {
   const fs = await import("fs");
   const path = await import("path");
   const { loadConfig } = await import("../core/config.js");
@@ -54,7 +61,8 @@ if (!__XANOS_CLIENT__) {
     },
   };
 } else {
-  const client = XansqlBridgeDialect("http://localhost:3000/api/xql");
+  const { protocol, host } = window.location;
+  const client = XansqlBridgeDialect(`${protocol}//${host}${BASE_PATH}`);
   dialect = client.dialect;
   file = client.file;
 }

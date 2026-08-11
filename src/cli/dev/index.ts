@@ -30,9 +30,10 @@ const dev = () => {
 
   watcher.on("all", (event, file) => {
     const normalized = file.replaceAll("\\", "/");
+
     if (
-      normalized.endsWith("/schema.ts") ||
-      normalized.endsWith("/routes.ts") ||
+      normalized.endsWith("/schema/index.ts") ||
+      normalized.endsWith("/api/index.ts") ||
       normalized.endsWith("xanos.config.ts") ||
       (event === "unlink" && normalized.endsWith("xanos.startup.ts"))
     ) {

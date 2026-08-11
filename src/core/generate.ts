@@ -8,8 +8,15 @@ function posixRel(from: string, to: string): string {
 }
 
 const generate = (apps: AppEntry[]) => {
-  const lines: string[] = [];
+  const lines: string[] = ["import {lazy} from 'react';"];
   const root = process.cwd();
+  lines.push(
+    `import XanosStartup from ${isWorkingFrameworkDir ? '"./src/client/startup.tsx"' : '"xanos/startup"'};`,
+  );
+  lines.push(
+    `import ${isWorkingFrameworkDir ? '"./src/database/index.ts"' : '"xanos/database"'};`,
+  );
+
   for (const app of apps) {
     if (app.files.schema) {
       const rel = posixRel(root, app.files.schema);
@@ -18,18 +25,14 @@ const generate = (apps: AppEntry[]) => {
   }
 
   for (const app of apps) {
-    const rel = posixRel(root, app.files.app);
-    lines.push(`import ${app.id}App from "./${rel}";`);
-  }
-
-  for (const app of apps) {
     const rel = posixRel(root, app.files.config);
     lines.push(`import ${app.id}AppConfig from "./${rel}";`);
   }
+  for (const app of apps) {
+    const rel = posixRel(root, app.files.app);
+    lines.push(`const ${app.id}App = lazy(() => import("./${rel}"));`);
+  }
 
-  lines.push(
-    `import XanosStartup from ${isWorkingFrameworkDir ? '"./src/client/startup.ts"' : '"xanos/startup"'};`,
-  );
   lines.push("");
   lines.push("const startup = {");
   for (const app of apps) {

@@ -25,13 +25,30 @@ const build = async () => {
         input: path.resolve(cwd, "xanos.startup.ts"),
 
         output: {
-          entryFileNames: "startup.js",
-          chunkFileNames: "chunks/[hash].js",
           assetFileNames: "assets/[hash][extname]",
+          entryFileNames: "startup.js",
+          chunkFileNames: (chunkInfo) => {
+            return `chunks/[name]-[hash].js`;
+            const name = chunkInfo.name;
+
+            const libs = [
+              "framework",
+              "xansql",
+              "encrypt",
+              "compresor",
+              "ui",
+              "vendor",
+            ];
+
+            if (libs.includes(name)) {
+              return `libs/${name}-[hash].js`;
+            }
+
+            return `os/${name}-[hash].js`;
+          },
 
           manualChunks(id) {
             const normalized = id.replace(/\\/g, "/");
-
             if (!normalized.includes("/node_modules/")) {
               return;
             }
@@ -53,7 +70,7 @@ const build = async () => {
               normalized.includes("/node_modules/youid/") ||
               normalized.includes("/node_modules/react-state-bucket/")
             ) {
-              return "libs";
+              return "xandev";
             }
 
             if (

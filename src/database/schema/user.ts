@@ -3,6 +3,9 @@ import { USER_ROLES, USER_STATUS } from "./constant.js";
 import { Model } from "xansql";
 
 export class UserModel extends Model {
+  get table() {
+    return "users";
+  }
   schema() {
     return {
       id: xt.id(),

@@ -5,15 +5,13 @@ import dev from "../cli/dev/index.js";
 import build from "../cli/build/index.js";
 import start from "../cli/start/index.js";
 import create from "../cli/create/index.js";
+import migrate from "../cli/migrate/index.js";
+import { log } from "console";
 const program = new Command();
 
 program.name("XANOS").description("Usages");
-
-program
-  .command("dev")
-  .description("run the development server")
-  .option("--port <number>", "dev server port")
-  .action(dev);
+program.command("dev").description("run the development server").action(dev);
+program.command("start").description("run the production server").action(start);
 
 program
   .command("build")
@@ -21,14 +19,29 @@ program
   .action(build);
 
 program
-  .command("start")
-  .description("run the production server")
-  .option("--port <number>", "server port")
-  .action(start);
-
-program
   .command("create")
   .description("create a new Xanos project")
   .action(create);
+
+// database migration commands
+program
+  .command("migrate")
+  .description("run database migrations")
+  .option("--force", "force run migrations")
+  .action(migrate);
+
+program
+  .command("make:schema <name>")
+  .description("create a new database migration")
+  .action((args, opt) => {
+    log(args, opt);
+  });
+
+program
+  .command("make:app <name>")
+  .description("create a new application")
+  .action((args, opt) => {
+    log(args, opt);
+  });
 
 program.parse();

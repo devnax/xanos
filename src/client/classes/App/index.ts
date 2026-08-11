@@ -1,4 +1,4 @@
-import { XanosInstance } from "../../index.js";
+import { XanosInstance } from "../../dep-index.js";
 import type { XanosAppSchemaProps } from "../XanosApps/schema.js";
 
 class App {

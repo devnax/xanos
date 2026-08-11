@@ -7,7 +7,7 @@ export interface AppEntry {
   files: {
     app: string;
     config: string;
-    routes: string | null;
+    api: string | null;
     schema: string | null;
   };
 }
@@ -38,8 +38,8 @@ export function scanProject(): AppEntry[] {
 
     const config = path.join(appsDir, name, "config.ts");
     const app = path.join(appsDir, name, "app.tsx");
-    const routes = path.join(appsDir, name, "routes.ts");
-    const schema = path.join(appsDir, name, "schema.ts");
+    const api = path.join(appsDir, name, "api/index.ts");
+    const schema = path.join(appsDir, name, "schema/index.ts");
 
     if (fs.existsSync(config) && fs.existsSync(app)) {
       apps.push({
@@ -48,7 +48,7 @@ export function scanProject(): AppEntry[] {
         files: {
           app,
           config,
-          routes: fs.existsSync(routes) ? routes : null,
+          api: fs.existsSync(api) ? api : null,
           schema: fs.existsSync(schema) ? schema : null,
         },
       });
