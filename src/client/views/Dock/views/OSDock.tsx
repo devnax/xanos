@@ -4,12 +4,13 @@ import RecentAppsButton from "../ActionButton/RecentAppsButton.js";
 import HomeButton from "../ActionButton/HomeButton.js";
 import AppDrawerButton from "../ActionButton/AppDrawerButton.js";
 import Box from "@xanui/ui/Box";
-
+import { useNavigate } from "react-router-dom";
 export type RenderAppsProps = {
   os: Xanos;
 };
 
 const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
+  const navigate = useNavigate();
   return (
     <Box
       width={38}
@@ -22,6 +23,7 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
       cursor={"pointer"}
       onClick={() => {
         os.runApp(app.id);
+        navigate(`/${app.id}`);
       }}
       sx={{
         shadow: 1,

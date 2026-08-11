@@ -27,6 +27,9 @@ export const XanosAppSchema = {
   onContextMenu: xv.any().optional(),
   widgets: xv.array(xv.object(XanosAppWidgetSchemaObject)).optional(),
   shortcuts: xv.array(xv.object(XanosAppShorcutSchemaObject)).optional(),
+
+  // internal
+  active: xv.boolean().default(false),
 };
 
 export type XanosAppSchemaProps = Infer<typeof XanosAppSchema>;

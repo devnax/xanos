@@ -1,4 +1,3 @@
-import React from "react";
 import Stack from "@xanui/ui/Stack";
 import CircleProgress from "@xanui/ui/CircleProgress";
 import { useState } from "react";
@@ -12,6 +11,7 @@ import Close from "@xanui/icons/Close";
 import type { XnaosScreenProps } from "../../classes/XanosScreen/schema.js";
 import useEmblaCarousel from "embla-carousel-react";
 import Layer from "@xanui/ui/Layer";
+import { useNavigate } from "react-router-dom";
 
 type ItemProps = { os: Xanos; screen: XnaosScreenProps; onClose: Function };
 

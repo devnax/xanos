@@ -10,6 +10,7 @@ import PushPin from "@xanui/icons/PushPin";
 import IconButton from "@xanui/ui/IconButton";
 import ArrowUpward from "@xanui/icons/ArrowUpward";
 import Layer from "@xanui/ui/Layer";
+import { useNavigate } from "react-router-dom";
 
 const AppIcon = ({
   app,
@@ -20,6 +21,8 @@ const AppIcon = ({
   os: Xanos;
   onClick: Function;
 }) => {
+  const navigate = useNavigate();
+
   const [target, setTarget] = useState<any>();
 
   return (
@@ -43,6 +46,7 @@ const AppIcon = ({
         onClick={() => {
           os.runApp(app.id);
           onClick();
+          navigate(`/${app.id}`);
         }}
         onContextMenu={(e) => {
           e.preventDefault();

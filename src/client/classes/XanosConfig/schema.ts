@@ -55,13 +55,13 @@ export const XanosConfigSchema = {
     }),
   dock: xv
     .object({
-      mode: xv.enum(["os", "web", "compact"] as const),
-      placement: xv.enum(["left", "right", "bottom"] as const),
+      mode: xv.enum(["os", "web", "nav", "compact"] as const),
+      placement: xv.enum(["left", "right", "top", "bottom"] as const),
       pinnedApps: xv.array(xv.string()).default([]),
     })
     .default({
       mode: "web",
-      placement: "left",
+      placement: "bottom",
       pinnedApps: [],
     }),
   notifications: xv

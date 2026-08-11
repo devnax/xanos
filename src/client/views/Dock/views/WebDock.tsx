@@ -5,12 +5,14 @@ import HomeButton from "../ActionButton/HomeButton.js";
 import AppDrawerButton from "../ActionButton/AppDrawerButton.js";
 import List from "@xanui/ui/List";
 import ListItem from "@xanui/ui/ListItem";
+import { useNavigate } from "react-router-dom";
 
 export type RenderAppsProps = {
   os: Xanos;
 };
 
 const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
+  const navigate = useNavigate();
   const activeScreen: any = os.screen.getActiveScreen();
   const isActiveApp = os.screen
     .getAppsOnScreen(activeScreen?.rid)
@@ -20,9 +22,9 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
     <ListItem
       startIcon={app.icon}
       selected={isActiveApp ? true : false}
-      // opacity={isActiveApp ? 1 : 0.6}
       onClick={() => {
         os.runApp(app.id);
+        navigate(`/${app.id}`);
       }}
       sx={{
         "& .list-item-text": {

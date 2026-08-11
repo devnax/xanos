@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { scanProject } from "./scanner.js";
 import { loadConfig } from "./config.js";
+import { isWorkingFrameworkDir } from "./paths.js";
 
 function posixRel(from: string, to: string): string {
   return path.relative(from, to).split(path.sep).join("/");
@@ -12,7 +13,9 @@ const setup = async () => {
   const apps = scanProject();
   const lines: string[] = [];
   const root = process.cwd();
-  lines.push(`import "xanos/database";`);
+  lines.push(
+    `import ${isWorkingFrameworkDir ? '"./src/database/index.ts"' : '"xanos/database"'};`,
+  );
 
   // import all schema files
   for (const app of apps) {
@@ -27,7 +30,9 @@ const setup = async () => {
   }
   //
   lines.push(`import {lazy} from 'react';`);
-  lines.push(`import XanosStartup from "xanos/startup";`);
+  lines.push(
+    `import XanosStartup from ${isWorkingFrameworkDir ? '"./src/client/startup.tsx"' : '"xanos/startup"'};`,
+  );
   // import all config files
   for (const app of apps) {
     const rel = posixRel(root, app.files.config);
