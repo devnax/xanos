@@ -1,9 +1,9 @@
 import path from "path";
 import prompts from "prompts";
-import _import from "../../core/import.js";
+import _import from "../../../core/import.js";
 import { fileURLToPath } from "url";
-import { scanProject } from "../../core/scanner.js";
-import logger from "../../core/logger.js";
+import { scanProject } from "../../../core/scanner.js";
+import logger from "../../../core/logger.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const migrate = async (options: { force?: boolean }) => {

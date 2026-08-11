@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
-import logger from "../../core/logger.js";
-import { verifyAppName } from "../../core/utils.js";
+import logger from "../../../core/logger.js";
+import { verifyAppName } from "../../../core/utils.js";
 
 const makeApp = async (appName: string) => {
   const verify = verifyAppName(appName);

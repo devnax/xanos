@@ -2,7 +2,7 @@ import path from "path";
 import chokidar from "chokidar";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "url";
-import logger from "../../core/logger.js";
+import logger from "../../../core/logger.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const filePath = path.join(__dirname, "./server.js");
 

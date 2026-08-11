@@ -3,8 +3,8 @@ import * as path from "path";
 import { spawn } from "child_process";
 import prompts from "prompts";
 import write from "./write.js";
-import { getFrameworkPackageJson } from "../../core/utils.js";
-import logger from "../../core/logger.js";
+import { getFrameworkPackageJson } from "../../../core/utils.js";
+import logger from "../../../core/logger.js";
 
 function scaffoldProject(dest: string, name: string): void {
   const PackageJson = getFrameworkPackageJson();

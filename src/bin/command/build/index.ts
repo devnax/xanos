@@ -1,9 +1,8 @@
 import path from "path";
 import { build as viteBuild } from "vite";
 import react from "@vitejs/plugin-react";
-import setup from "../../core/setup.js";
-import logger from "../../core/logger.js";
-import { log } from "console";
+import setup from "../../../core/setup.js";
+import logger from "../../../core/logger.js";
 
 const cwd = process.cwd();
 const outDir = path.join(cwd, ".os");

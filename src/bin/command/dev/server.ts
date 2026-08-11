@@ -1,8 +1,8 @@
-import server from "../../server/index.js";
+import server from "../../../server/index.js";
 import fs from "fs";
-import { printServerInfo } from "../../core/logger.js";
+import { printServerInfo } from "../../../core/logger.js";
 import path from "path";
-import { frameworkDir } from "../../core/paths.js";
+import { frameworkDir } from "../../../core/paths.js";
 
 const dev = async () => {
   const port = 3000;

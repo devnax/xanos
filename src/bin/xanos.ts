@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
-import dev from "../cli/dev/index.js";
-import build from "../cli/build/index.js";
-import start from "../cli/start/index.js";
-import create from "../cli/create/index.js";
-import migrate from "../cli/migrate/index.js";
-import makeApp from "../cli/make-app/index.js";
+import dev from "./command/dev/index.js";
+import build from "./command/build/index.js";
+import start from "./command/start/index.js";
+import create from "./command/create/index.js";
+import migrate from "./command/migrate/index.js";
+import makeApp from "./command/make-app/index.js";
 const program = new Command();
 
 program.name("XANOS").description("Usages");

@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
-import server from "../../server/index.js";
-import { printServerInfo } from "../../core/logger.js";
+import server from "../../../server/index.js";
+import { printServerInfo } from "../../../core/logger.js";
 const start = async (_str: string, options: { port?: number }) => {
   // check if the prodcution build exists. check the startup.js file in the .os directory. if it doesn't exist, run the build command first
   const cwd = process.cwd();
