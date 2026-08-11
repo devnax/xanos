@@ -3,6 +3,7 @@ import { build as viteBuild } from "vite";
 import react from "@vitejs/plugin-react";
 import setup from "../../core/setup.js";
 import logger from "../../core/logger.js";
+import { log } from "console";
 
 const cwd = process.cwd();
 const outDir = path.join(cwd, ".os");
@@ -27,87 +28,36 @@ const build = async () => {
         output: {
           assetFileNames: "assets/[hash][extname]",
           entryFileNames: "startup.js",
-          chunkFileNames: (chunkInfo) => {
-            return `chunks/[name]-[hash].js`;
+          chunkFileNames(chunkInfo) {
             const name = chunkInfo.name;
-
-            const libs = [
-              "framework",
-              "xansql",
-              "encrypt",
-              "compresor",
-              "ui",
-              "vendor",
-            ];
-
-            if (libs.includes(name)) {
-              return `libs/${name}-[hash].js`;
+            if (name.startsWith("app")) {
+              return `apps/[hash].js`;
             }
-
-            return `os/${name}-[hash].js`;
+            if (name.startsWith("rolldown-runtime")) {
+              return `vendor/[hash].js`;
+            }
+            if (name.startsWith("vendor")) {
+              return `vendor/[hash].js`;
+            }
+            return `[hash].js`;
           },
 
           manualChunks(id) {
-            const normalized = id.replace(/\\/g, "/");
-            if (!normalized.includes("/node_modules/")) {
-              return;
+            id = id.replace(/\\/g, "/");
+
+            if (id.includes("@xanui/")) {
+              // return "xanui";
             }
 
-            if (
-              normalized.includes("/node_modules/react/") ||
-              normalized.includes("/node_modules/react-dom/") ||
-              normalized.includes("/node_modules/react-router/") ||
-              normalized.includes("/node_modules/react-router-dom/") ||
-              normalized.includes("/node_modules/react-router-config/") ||
-              normalized.includes("/node_modules/scheduler/")
-            ) {
-              return "framework";
+            if (id.includes("node_modules")) {
+              const parts = id.split("/");
+              const index = parts.lastIndexOf("node_modules");
+              if (index !== -1 && index + 1 < parts.length) {
+                const packageName = parts[index + 1];
+                return `vendor/${packageName}`;
+              }
             }
-
-            if (
-              normalized.includes("/node_modules/react-rock/") ||
-              normalized.includes("/node_modules/xanv/") ||
-              normalized.includes("/node_modules/youid/") ||
-              normalized.includes("/node_modules/react-state-bucket/")
-            ) {
-              return "xandev";
-            }
-
-            if (
-              normalized.includes("/node_modules/fflate/") ||
-              normalized.includes("/node_modules/msgpackr/")
-            ) {
-              return "encrypt";
-            }
-
-            if (
-              normalized.includes("/node_modules/libsodium/") ||
-              normalized.includes("/node_modules/libsodium-wrappers/")
-            ) {
-              return "compresor";
-            }
-
-            if (
-              normalized.includes("/node_modules/xanfetch/") ||
-              normalized.includes("/node_modules/securequ/") ||
-              normalized.includes("/node_modules/xansql/")
-            ) {
-              return "xansql";
-            }
-
-            if (
-              normalized.includes("/node_modules/@xanui/") ||
-              normalized.includes("/node_modules/oncss/") ||
-              normalized.includes("/node_modules/pretty-class/") ||
-              normalized.includes("/node_modules/hueforge/") ||
-              normalized.includes("/node_modules/embla-carousel-react/") ||
-              normalized.includes("/node_modules/embla-carousel/") ||
-              normalized.includes("/node_modules/react-grid-layout/")
-            ) {
-              return "ui";
-            }
-
-            return "vendor";
+            return undefined;
           },
         },
       },

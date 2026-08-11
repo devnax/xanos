@@ -18,6 +18,7 @@ export async function loadConfig(): Promise<XanosConfig> {
         sqlite: "./database/xanos.db",
       },
       files: "./public/uploads",
+      apps: [],
     };
   }
 

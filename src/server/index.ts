@@ -6,17 +6,6 @@ import loader from "./loader.js";
 import statics from "./statics.js";
 import loadDatabase from "./bridge.js";
 import setup from "../core/setup.js";
-import database from "../database/index.js";
-
-const config = await loadConfig();
-const app = express();
-
-await loader(app);
-statics(app);
-
-// database.models.keys().forEach((model) => {
-//   console.log(model.name);
-// });
 
 const server = async ({
   port = 3000,
@@ -25,7 +14,10 @@ const server = async ({
   port?: number;
   development?: boolean;
 }) => {
-  setup();
+  const app = express();
+  statics(app);
+  await loader(app);
+  await setup();
   await loadDatabase(app, development);
 
   if (development) {

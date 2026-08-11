@@ -17,8 +17,16 @@ const statics = async (app: express.Express) => {
   );
 
   app.use(
-    "/chunks",
-    express.static(".os/chunks", {
+    "/apps",
+    express.static(".os/apps", {
+      maxAge: "1y",
+      immutable: true,
+    }),
+  );
+
+  app.use(
+    "/vendor",
+    express.static(".os/vendor", {
       maxAge: "1y",
       immutable: true,
     }),

@@ -6,7 +6,7 @@ import build from "../cli/build/index.js";
 import start from "../cli/start/index.js";
 import create from "../cli/create/index.js";
 import migrate from "../cli/migrate/index.js";
-import { log } from "console";
+import makeApp from "../cli/make-app/index.js";
 const program = new Command();
 
 program.name("XANOS").description("Usages");
@@ -31,17 +31,8 @@ program
   .action(migrate);
 
 program
-  .command("make:schema <name>")
-  .description("create a new database migration")
-  .action((args, opt) => {
-    log(args, opt);
-  });
-
-program
   .command("make:app <name>")
   .description("create a new application")
-  .action((args, opt) => {
-    log(args, opt);
-  });
+  .action(makeApp);
 
 program.parse();

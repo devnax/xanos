@@ -2,14 +2,16 @@ import os from "os";
 import pc from "picocolors";
 
 const logger = {
-  info: (msg: string) => console.log(`[xanos] ${msg}`),
-  warn: (msg: string) => console.warn(`[xanos:warn] ${msg}`),
-  error: (msg: string, opts?: { error?: any }) =>
-    console.error(`[xanos:error] ${msg}`, opts?.error ?? ""),
+  info: (msg: string) => console.log(`${pc.blue("[xanos]")} ${msg}`),
+  warn: (msg: string) =>
+    console.log(`${pc.yellow("[xanos:warn]")} ${pc.yellow(msg)}`),
+  error: (msg: string) =>
+    console.log(`${pc.red("[xanos:error]")} ${pc.red(msg)}`),
+  warnOnce: (msg: string) =>
+    console.log(`${pc.yellow("[xanos:warn]")} ${pc.yellow(msg)}`),
   clearScreen: () => {},
   hasErrorLogged: () => false,
   hasWarned: false,
-  warnOnce: (msg: string) => console.warn(`[xanos:warn] ${msg}`),
 };
 
 export default logger;

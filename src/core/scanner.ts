@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import { verifyAppName } from "./utils.js";
 
 export interface AppEntry {
   id: string;
@@ -27,14 +28,8 @@ export function scanProject(): AppEntry[] {
   const apps: AppEntry[] = [];
 
   for (const name of appNames) {
-    if (!/^[a-z][a-z0-9_-]{4,}$/.test(name)) {
-      console.warn(
-        `[Xanos] Skipping app "${name}": invalid name. ` +
-          `Use 5+ characters, start with a lowercase letter, ` +
-          `and use only a-z, 0-9, "-" or "_".`,
-      );
-      continue;
-    }
+    const verify = verifyAppName(name);
+    if (!verify) continue;
 
     const config = path.join(appsDir, name, "config.ts");
     const app = path.join(appsDir, name, "app.tsx");

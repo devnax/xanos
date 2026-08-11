@@ -25,6 +25,7 @@
     ],
     "exclude": [
         "node_modules",
-        ".os"
+        ".os",
+        "xanos.startup.ts"
     ]
 }

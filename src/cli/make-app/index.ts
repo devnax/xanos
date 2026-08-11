@@ -1,13 +1,12 @@
 import path from "path";
 import fs from "fs";
+import logger from "../../core/logger.js";
+import { verifyAppName } from "../../core/utils.js";
 
 const makeApp = async (appName: string) => {
-  if (!/^[a-z][a-z0-9_-]{4,}$/.test(appName)) {
-    throw new Error(
-      `Invalid app name "${appName}". ` +
-        `Use 5+ characters, start with a lowercase letter, ` +
-        `and use only a-z, 0-9, "-" or "_".`,
-    );
+  const verify = verifyAppName(appName);
+  if (!verify) {
+    return;
   }
 
   // check the app directory exists
@@ -27,9 +26,11 @@ const makeApp = async (appName: string) => {
   const apiFile = path.join(apiDir, "index.ts");
 
   if (fs.existsSync(appDir)) {
-    throw new Error(`App directory "${appDir}" already exists.`);
+    logger.error(`App directory "${appDir}" already exists. Aborting.`);
+    return;
   }
 
+  logger.info(`Creating app directory "${appDir}"...`);
   fs.mkdirSync(appDir);
   fs.mkdirSync(schemaDir);
   fs.mkdirSync(apiDir);
@@ -37,20 +38,23 @@ const makeApp = async (appName: string) => {
   fs.writeFileSync(
     configFile,
     `import Icon from "@xanui/icons/Extension";
+
 export default {
     name: "${appName}",
-    color: "#fefefe",
+    color: "#b20303",
     icon: Icon,
 };`,
   );
   fs.writeFileSync(
     appFile,
-    `import React, { useEffect } from "react";
+    `import React from "react";
+
 const ${appName}App = () => {
-    return (
-        <div>${appName} App</div>
-    )
+  return (
+    <div>${appName} App</div>
+  )
 }
+    
 export default ${appName}App; 
 `,
   );
@@ -68,7 +72,9 @@ class ${appName}Model extends Model {
   schema() {
     return {
       id: xt.id(),
-      name: xt.string().min(3).max(100),
+
+      // Add your schema fields here
+
       created_at: xt.createdAt(),
       updated_at: xt.updatedAt(),
     };
@@ -81,12 +87,16 @@ class ${appName}Model extends Model {
   fs.writeFileSync(
     apiFile,
     `import { Router } from "express"
+
 const api = Router();
 api.get("/", async (req, res) => {
-    res.status(200).setHeader("Content-Type", "text/html").end("<h1>Welcome</h1>");
+  res.status(200).setHeader("Content-Type", "text/html").end("<h1>Welcome</h1>");
 });
+
 export default api;`,
   );
+
+  logger.info(`App "${appName}" created successfully.`);
 };
 
 export default makeApp;

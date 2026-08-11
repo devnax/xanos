@@ -1,46 +1,28 @@
 import * as fs from "fs";
 import * as path from "path";
+import { spawn } from "child_process";
 import prompts from "prompts";
 import write from "./write.js";
-import { frameworkDir } from "../../core/paths.js";
-
-function getPackageJson() {
-  const packageJsonPath = path.join(frameworkDir, "package.json");
-  return JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-}
+import { getFrameworkPackageJson } from "../../core/utils.js";
+import logger from "../../core/logger.js";
 
 function scaffoldProject(dest: string, name: string): void {
-  const PackageJson = getPackageJson();
-  const reactVersion = PackageJson.dependencies?.["react"] || "19.2.8";
+  const PackageJson = getFrameworkPackageJson();
 
   write(
     path.join(dest, "package.json"),
     JSON.stringify(
       {
         name,
-        version: "0.1.0",
-        private: true,
+        version: "1.0.0",
         scripts: {
           dev: "xanos dev",
           build: "xanos build",
           start: "xanos start",
+          "make:app": "xanos make:app",
         },
-        dependencies: {
-          xanos: `^${PackageJson.version}`,
-          react: `^${reactVersion}`,
-          "react-dom": `^${reactVersion}`,
-          "react-rock": PackageJson["react-rock"],
-          "@xanui/ui": PackageJson["@xanui/ui"],
-          "@xanui/core": PackageJson["@xanui/core"],
-          "@xanui/icons": PackageJson["@xanui/icons"],
-          "better-sqlite3": PackageJson["better-sqlite3"],
-          xansql: PackageJson["xansql"],
-        },
-        devDependencies: {
-          typescript: "^5.4.0",
-          "@types/react": `^${reactVersion}`,
-          "@types/react-dom": `^${reactVersion}`,
-        },
+        dependencies: PackageJson.dependencies,
+        devDependencies: PackageJson.devDependencies,
       },
       null,
       2,
@@ -56,7 +38,7 @@ function scaffoldProject(dest: string, name: string): void {
   write(
     path.join(dest, "xanos.config.ts"),
     `import type { XanosConfig } from "xanos/core";
-import SqliteDialect from "xansql/dialects/Sqlite";
+
 const config: XanosConfig = {
   database: {
     engine: "sqlite",
@@ -65,7 +47,9 @@ const config: XanosConfig = {
     postgres:{}
   },
   files: "./public/uploads",
+  apps: []
 };
+
 export default config;
   `,
   );
@@ -88,43 +72,25 @@ export default config;
           jsx: "react-jsx",
           incremental: true,
         },
-        include: ["apps", ".os"],
-        exclude: ["node_modules"],
+        include: ["apps"],
+        exclude: ["node_modules", ".os", "xanos.startup.ts"],
       },
       null,
       2,
     ),
   );
   write(path.join(dest, "public", "uploads", "index.html"), ``);
-  write(
-    path.join(dest, "apps", "main", "index.tsx"),
-    `export default function App() {
-  return (
-    <main>
-      <h1>Hello Xanos</h1>
-    </main>
-  );
-}
-`,
-  );
-  write(
-    path.join(dest, "startup.ts"),
-    `import "xanos/startup"
-import "./apps/main/index.tsx"
-  `,
-  );
 }
 
 const installDeps = async (dest: string): Promise<void> => {
-  console.log(`\nInstalling dependencies...`);
-  const { spawn } = await import("child_process");
+  logger.info(`\nInstalling dependencies...`);
   const child = spawn("npm", ["install"], {
     cwd: dest,
     stdio: "inherit",
   });
   child.on("close", (code) => {
     if (code !== 0) {
-      console.error(`npm install failed with exit code ${code}`);
+      logger.error(`npm install failed with exit code ${code}`);
       process.exit(code || 1);
     }
   });
@@ -147,11 +113,15 @@ export default async function create(): Promise<void> {
   const dest = path.resolve(process.cwd(), projectName);
 
   if (fs.existsSync(dest)) {
-    console.error(`Directory "${projectName}" already exists.`);
+    logger.error(`Directory "${projectName}" already exists.`);
     process.exit(1);
   }
 
-  console.log(`\nScaffolding Xanos project at ./${projectName} ...`);
+  logger.info(`\nScaffolding Xanos project at ./${projectName} ...`);
   scaffoldProject(dest, projectName);
+  spawn("npx", ["xanos", "make:app", "main"], {
+    cwd: dest,
+    stdio: "inherit",
+  });
   await installDeps(dest);
 }
