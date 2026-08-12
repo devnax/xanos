@@ -16,6 +16,7 @@ program.command("start").description("run the production server").action(start);
 program
   .command("build")
   .description("build xanos for production")
+  .option("--secure <boolean>", "enable secure build")
   .action(build);
 
 program

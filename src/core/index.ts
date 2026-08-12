@@ -18,5 +18,5 @@ export interface XanosConfig {
     postgres?: PoolConfig;
   };
   files: FilePath | S3FilesConfig;
-  apps: string[];
+  customApps: string[];
 }

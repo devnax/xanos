@@ -9,7 +9,11 @@ import { AppProvider } from "./context/AppContext.js";
 import { OSProvider } from "./context/OSContext.js";
 export const XanosInstance = new Xanos();
 
-const startup = (apps: Record<string, { app: any; config: any }>) => {
+export type Startup = {
+  apps: Record<string, { app: any; config: any }>;
+};
+
+const startup = ({ apps }: Startup) => {
   for (const appId in apps) {
     const { app, config } = apps[appId];
     if (!config.name || !config.color || !config.icon) {
@@ -52,23 +56,7 @@ const startup = (apps: Record<string, { app: any; config: any }>) => {
   if (!container) throw new Error("Missing #xroot element");
   createRoot(container).render(
     <BrowserRouter>
-      <OSProvider os={XanosInstance}>
-        <Suspense
-          fallback={
-            <Stack
-              height="100vh"
-              width="100vw"
-              alignItems="center"
-              justifyContent="center"
-              bgcolor={"rgba(255, 255, 255, 0.01)"}
-            >
-              <CircleProgress size="lg" />
-            </Stack>
-          }
-        >
-          {XanosInstance.render()}
-        </Suspense>
-      </OSProvider>
+      <OSProvider os={XanosInstance}>{XanosInstance.render()}</OSProvider>
     </BrowserRouter>,
   );
 };

@@ -10,24 +10,25 @@ function posixRel(from: string, to: string): string {
 
 const setup = async () => {
   const config = await loadConfig();
-  const apps = scanProject();
+  const apps = await scanProject();
   const lines: string[] = [];
   const root = process.cwd();
   lines.push(
-    `import ${isWorkingFrameworkDir ? '"./src/database/index.ts"' : '"xanos/database"'};`,
+    `await import(${isWorkingFrameworkDir ? '"./src/database/index.ts"' : '"xanos/database"'});`,
   );
 
   // import all schema files
   for (const app of apps) {
     if (app.files.schema) {
-      const rel = posixRel(root, app.files.schema);
-      lines.push(`import "./${rel}";`);
+      if (app.type === "app") {
+        const rel = posixRel(root, app.files.schema);
+        lines.push(`await import("./${rel}");`);
+      } else {
+        lines.push(`await import("${app.files.schema}");`);
+      }
     }
   }
 
-  for (const app of config.apps) {
-    lines.push(`import "${app}/schema";`);
-  }
   //
   lines.push(`import {lazy} from 'react';`);
   lines.push(
@@ -35,37 +36,36 @@ const setup = async () => {
   );
   // import all config files
   for (const app of apps) {
-    const rel = posixRel(root, app.files.config);
-    lines.push(`import ${app.id}AppConfig from "./${rel}";`);
-  }
-
-  for (const app of config.apps) {
-    lines.push(`import ${app}AppConfig from "${app}/config";`);
+    if (app.type === "app") {
+      const rel = posixRel(root, app.files.config);
+      lines.push(`import ${app.id}AppConfig from "./${rel}";`);
+    } else {
+      lines.push(`import ${app.id}AppConfig from "${app.files.config}";`);
+    }
   }
 
   // import all app files
   for (const app of apps) {
-    const rel = posixRel(root, app.files.app);
-    lines.push(`const ${app.id}App = lazy(() => import("./${rel}"));`);
-  }
-
-  for (const app of config.apps) {
-    lines.push(`const ${app}App = lazy(() => import("${app}/app"));`);
+    if (app.type === "app") {
+      const rel = posixRel(root, app.files.app);
+      lines.push(`const ${app.id}App = lazy(() => import("./${rel}"));`);
+    } else {
+      lines.push(
+        `const ${app.id}App = lazy(() => import("${app.files.app}"));`,
+      );
+    }
   }
 
   lines.push("");
-  lines.push("const startup = {");
+  lines.push("const apps = {");
   for (const app of apps) {
     lines.push(
       `  ${app.id}: { app: ${app.id}App, config: ${app.id}AppConfig },`,
     );
   }
-  for (const app of config.apps) {
-    lines.push(`  ${app}: { app: ${app}App, config: ${app}AppConfig },`);
-  }
   lines.push("};");
   lines.push("");
-  lines.push("XanosStartup(startup);");
+  lines.push("XanosStartup({ apps });");
 
   fs.writeFileSync(
     path.join(root, "xanos.startup.ts"),

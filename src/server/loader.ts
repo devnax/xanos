@@ -5,7 +5,7 @@ import { loadConfig } from "../core/config.js";
 
 const loader = async (app: express.Express) => {
   const config = await loadConfig();
-  const scan = scanProject();
+  const scan = await scanProject();
 
   for (let { files, id } of scan) {
     if (files.api) {
@@ -20,18 +20,6 @@ const loader = async (app: express.Express) => {
     if (files.schema) {
       await _import(files.schema);
     }
-  }
-
-  for (let appName of config.apps) {
-    const apiFile = `${appName}/api`;
-    const schemaFile = `${appName}/schema`;
-    const imp = (await _import(apiFile)) as {
-      default: Record<string, Router>;
-    };
-    if (imp.default instanceof Router) {
-      app.use(`/api/${appName}`, imp.default as unknown as Router);
-    }
-    await _import(schemaFile);
   }
 };
 

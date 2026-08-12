@@ -47,7 +47,7 @@ const config: XanosConfig = {
     postgres:{}
   },
   files: "./public/uploads",
-  apps: []
+  customApps: []
 };
 
 export default config;

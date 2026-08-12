@@ -6,6 +6,7 @@ import loader from "./loader.js";
 import statics from "./statics.js";
 import loadDatabase from "./bridge.js";
 import setup from "../core/setup.js";
+import { scanProject } from "../core/scanner.js";
 
 const server = async ({
   port = 3000,
@@ -15,6 +16,9 @@ const server = async ({
   development?: boolean;
 }) => {
   const app = express();
+  const scan = await scanProject();
+  const appIds = scan.map((app) => app.id);
+
   statics(app);
   await loader(app);
   await setup();
@@ -23,7 +27,7 @@ const server = async ({
   if (development) {
     await dev(app);
   } else {
-    app.get("/", async (req, res) => {
+    app.get(/.*/, async (_req, res) => {
       res
         .status(200)
         .setHeader("Content-Type", "text/html")

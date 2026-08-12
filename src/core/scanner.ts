@@ -1,8 +1,10 @@
 import * as fs from "fs";
 import * as path from "path";
 import { verifyAppName } from "./utils.js";
+import { loadConfig } from "./config.js";
 
 export interface AppEntry {
+  type: "custom" | "app";
   id: string;
   dir: string;
   files: {
@@ -21,11 +23,27 @@ function readDirs(dir: string): string[] {
     .map((d) => d.name);
 }
 
-export function scanProject(): AppEntry[] {
+const apps: AppEntry[] = [];
+
+export async function scanProject(): Promise<AppEntry[]> {
+  if (apps.length > 0) return apps;
   const appsDir = path.join(process.cwd(), "apps");
   const appNames = readDirs(appsDir);
+  const config = await loadConfig();
 
-  const apps: AppEntry[] = [];
+  for (let appId of config.customApps) {
+    apps.push({
+      type: "custom",
+      id: appId,
+      dir: "",
+      files: {
+        app: `${appId}/app`,
+        config: `${appId}/config`,
+        api: `${appId}/api`,
+        schema: `${appId}/schema`,
+      },
+    });
+  }
 
   for (const name of appNames) {
     const verify = verifyAppName(name);
@@ -38,6 +56,7 @@ export function scanProject(): AppEntry[] {
 
     if (fs.existsSync(config) && fs.existsSync(app)) {
       apps.push({
+        type: "app",
         id: name,
         dir: path.join(appsDir, name),
         files: {

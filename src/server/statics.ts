@@ -31,6 +31,23 @@ const statics = async (app: express.Express) => {
       immutable: true,
     }),
   );
+
+  app.use(
+    "/database",
+    express.static(".os/database", {
+      maxAge: "1y",
+      immutable: true,
+    }),
+  );
+
+  app.use(
+    "/schema",
+    express.static(".os/schema", {
+      maxAge: "1y",
+      immutable: true,
+    }),
+  );
+
   app.use(
     express.static("public", {
       maxAge: "1y",

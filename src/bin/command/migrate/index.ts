@@ -7,7 +7,7 @@ import logger from "../../../core/logger.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const migrate = async (options: { force?: boolean }) => {
-  const scan = scanProject();
+  const scan = await scanProject();
   const force = options.force || false;
   if (force) {
     const response = await prompts([

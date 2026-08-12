@@ -13,8 +13,8 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
   const navigate = useNavigate();
   return (
     <Box
-      width={38}
-      height={38}
+      width={34}
+      height={34}
       display="flex"
       justifyContent="center"
       alignItems="center"
@@ -29,8 +29,8 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
         shadow: 1,
         transition: "transform .12s ease, box-shadow .12s ease",
         "& svg": {
-          width: "65%",
-          height: "65%",
+          width: "60%",
+          height: "60%",
         },
 
         "&:hover": {
@@ -55,7 +55,7 @@ const OSDock = ({ os }: { os: Xanos }) => {
 
   return (
     <Stack
-      height={isSide ? "100%" : 52}
+      height={isSide ? "100%" : 44}
       width={isSide ? 52 : "100%"}
       px={isSide ? 0 : 1.5}
       py={isSide ? 1.5 : 0}
