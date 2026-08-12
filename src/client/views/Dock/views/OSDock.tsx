@@ -1,15 +1,13 @@
-import Xanos from "../../../classes/Xanos/index.js";
+import XanosApps from "../../../classes/XanosApps/index.js";
 import Stack from "@xanui/ui/Stack";
 import RecentAppsButton from "../ActionButton/RecentAppsButton.js";
 import HomeButton from "../ActionButton/HomeButton.js";
 import AppDrawerButton from "../ActionButton/AppDrawerButton.js";
 import Box from "@xanui/ui/Box";
 import { useNavigate } from "react-router-dom";
-export type RenderAppsProps = {
-  os: Xanos;
-};
+import XanosConfig from "../../../classes/XanosConfig/index.js";
 
-const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
+const AppIcon = ({ app }: { app: any }) => {
   const navigate = useNavigate();
   return (
     <Box
@@ -22,7 +20,7 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
       bgcolor={app.color || "brand.primary"}
       cursor={"pointer"}
       onClick={() => {
-        os.runApp(app.id);
+        XanosApps.run(app.id);
         navigate(`/${app.id}`);
       }}
       sx={{
@@ -48,10 +46,10 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
   );
 };
 
-const OSDock = ({ os }: { os: Xanos }) => {
-  const { placement } = os.config.dock;
+const OSDock = () => {
+  const { placement } = XanosConfig.get("dock");
   const isSide = placement === "left" || placement === "right";
-  const apps = os.apps.getApps();
+  const apps = XanosApps.getApps();
 
   return (
     <Stack
@@ -69,7 +67,7 @@ const OSDock = ({ os }: { os: Xanos }) => {
     >
       <Stack direction={isSide ? "column" : "row"} gap={1.5} flexWrap={"wrap"}>
         {apps.map((app) => (
-          <AppIcon key={app.id} app={app} os={os} />
+          <AppIcon key={app.id} app={app} />
         ))}
       </Stack>
       <Stack
@@ -78,9 +76,9 @@ const OSDock = ({ os }: { os: Xanos }) => {
         justifyContent="flex-end"
         gap={1}
       >
-        <RecentAppsButton os={os} />
-        <HomeButton os={os} />
-        <AppDrawerButton os={os} />
+        <RecentAppsButton />
+        <HomeButton />
+        <AppDrawerButton />
       </Stack>
     </Stack>
   );

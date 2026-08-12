@@ -1,11 +1,11 @@
-import React from "react";
-import Xanos from "../../../classes/Xanos/index.js";
 import Stack from "@xanui/ui/Stack";
 import RecentAppsButton from "../ActionButton/RecentAppsButton.js";
 import HomeButton from "../ActionButton/HomeButton.js";
 import AppDrawerButton from "../ActionButton/AppDrawerButton.js";
-const CompactDock = ({ os }: { os: Xanos }) => {
-  const { placement } = os.config.dock;
+import XanosConfig from "../../../classes/XanosConfig/index.js";
+
+const CompactDock = () => {
+  const { placement } = XanosConfig.get("dock");
   const isSide = placement === "left" || placement === "right";
   let sx: any = {};
   switch (placement) {
@@ -43,9 +43,9 @@ const CompactDock = ({ os }: { os: Xanos }) => {
       p={0.2}
       backdropFilter={"blur(50px)"}
     >
-      <RecentAppsButton os={os} />
-      <HomeButton os={os} />
-      <AppDrawerButton os={os} />
+      <RecentAppsButton />
+      <HomeButton />
+      <AppDrawerButton />
     </Stack>
   );
 };

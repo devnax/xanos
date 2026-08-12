@@ -1,22 +1,19 @@
-import React from "react";
-import Xanos from "../../classes/Xanos/index.js";
 import OSDock from "./views/OSDock.js";
 import CompactDock from "./views/CompactDock.js";
 import WebDock from "./views/WebDock.js";
+import XanosConfig from "../../classes/XanosConfig/index.js";
 
-export type DockProps = {
-  os: Xanos;
-};
+export type DockProps = {};
 
-const Dock = ({ os }: DockProps) => {
-  const { mode } = os.config.dock;
+const Dock = ({}: DockProps) => {
+  const { mode } = XanosConfig.get("dock");
   switch (mode) {
     case "os":
-      return <OSDock os={os} />;
+      return <OSDock />;
     case "web":
-      return <WebDock os={os} />;
+      return <WebDock />;
     case "compact":
-      return <CompactDock os={os} />;
+      return <CompactDock />;
   }
   return null;
 };

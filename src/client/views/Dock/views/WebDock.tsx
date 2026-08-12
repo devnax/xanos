@@ -1,4 +1,3 @@
-import Xanos from "../../../classes/Xanos/index.js";
 import Stack from "@xanui/ui/Stack";
 import RecentAppsButton from "../ActionButton/RecentAppsButton.js";
 import HomeButton from "../ActionButton/HomeButton.js";
@@ -6,24 +5,19 @@ import AppDrawerButton from "../ActionButton/AppDrawerButton.js";
 import List from "@xanui/ui/List";
 import ListItem from "@xanui/ui/ListItem";
 import { useNavigate } from "react-router-dom";
+import XanosApps from "../../../classes/XanosApps/index.js";
+import useActiveApp from "../../../hooks/useActiveApp.js";
 
-export type RenderAppsProps = {
-  os: Xanos;
-};
-
-const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
+const AppIcon = ({ app }: { app: any }) => {
   const navigate = useNavigate();
-  const activeScreen: any = os.screen.getActiveScreen();
-  const isActiveApp = os.screen
-    .getAppsOnScreen(activeScreen?.rid)
-    .find((a: any) => a.appId === app.id);
-
+  const activeApp = useActiveApp();
+  const isActiveApp = activeApp?.id === app.id;
   return (
     <ListItem
       startIcon={app.icon}
       selected={isActiveApp ? true : false}
       onClick={() => {
-        os.runApp(app.id);
+        XanosApps.run(app.id);
         navigate(`/${app.id}`);
       }}
       sx={{
@@ -38,8 +32,8 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
   );
 };
 
-const WebDock = ({ os }: { os: Xanos }) => {
-  const apps = os.apps.getApps();
+const WebDock = () => {
+  const apps = XanosApps.getApps();
 
   return (
     <Stack
@@ -52,7 +46,7 @@ const WebDock = ({ os }: { os: Xanos }) => {
     >
       <List variant={"ghost"} color={"brand"}>
         {apps.map((app) => (
-          <AppIcon key={app.id} app={app} os={os} />
+          <AppIcon key={app.id} app={app} />
         ))}
       </List>
       <Stack
@@ -63,9 +57,9 @@ const WebDock = ({ os }: { os: Xanos }) => {
         justifyContent="center"
         gap={1}
       >
-        <RecentAppsButton os={os} />
-        <HomeButton os={os} />
-        <AppDrawerButton os={os} />
+        <RecentAppsButton />
+        <HomeButton />
+        <AppDrawerButton />
       </Stack>
     </Stack>
   );

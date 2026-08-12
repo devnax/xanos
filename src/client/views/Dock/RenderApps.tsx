@@ -1,13 +1,9 @@
-import React from "react";
 import Box from "@xanui/ui/Box";
 import Stack from "@xanui/ui/Stack";
-import Xanos from "../../classes/Xanos/index.js";
+import XanosApps from "../../classes/XanosApps/index.js";
+import XanosConfig from "../../classes/XanosConfig/index.js";
 
-export type RenderAppsProps = {
-  os: Xanos;
-};
-
-const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
+const AppIcon = ({ app }: { app: any }) => {
   return (
     <Box
       width={40}
@@ -19,7 +15,7 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
       bgcolor={app.color || "brand.primary"}
       cursor={"pointer"}
       onClick={() => {
-        os.runApp(app.id);
+        XanosApps.run(app.id);
       }}
       sx={{
         shadow: "md",
@@ -44,15 +40,15 @@ const AppIcon = ({ app, os }: { app: any; os: Xanos }) => {
   );
 };
 
-const RenderApps = ({ os }: RenderAppsProps) => {
-  const apps = os.apps.getApps();
-  const { placement } = os.config.dock;
+const RenderApps = () => {
+  const apps = XanosApps.getApps();
+  const { placement } = XanosConfig.get("dock", true);
   const isSide = placement === "left" || placement === "right";
 
   return (
     <Stack direction={isSide ? "column" : "row"} gap={1.5} flexWrap={"wrap"}>
       {apps.map((app) => (
-        <AppIcon key={app.id} app={app} os={os} />
+        <AppIcon key={app.id} app={app} />
       ))}
     </Stack>
   );

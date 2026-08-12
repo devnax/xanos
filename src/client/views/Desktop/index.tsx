@@ -8,9 +8,8 @@ import WidgetsOutlined from "@xanui/icons/WidgetsOutlined";
 import RefreshOutlined from "@xanui/icons/RefreshOutlined";
 import StyleOutlined from "@xanui/icons/StyleOutlined";
 import WidgetDrawer from "../WidgetDrawer/index.js";
-import Xanos from "../../classes/Xanos/index.js";
 
-const Desktop = ({ os }: { os: Xanos }) => {
+const Desktop = () => {
   const onContextMenu = useContextMenu({
     children: (
       <List size="sm">
@@ -25,7 +24,7 @@ const Desktop = ({ os }: { os: Xanos }) => {
           startIcon={<WidgetsOutlined />}
           onClick={() => {
             onContextMenu.close();
-            WidgetDrawer.open(os);
+            WidgetDrawer.open();
           }}
         >
           Widgets

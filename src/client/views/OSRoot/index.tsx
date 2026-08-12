@@ -1,28 +1,26 @@
 import { useEffect, useMemo } from "react";
-import { AppRoot, createTheme, Transition } from "@xanui/core";
+import { AppRoot, createTheme } from "@xanui/core";
 import Stack from "@xanui/ui/Stack";
-import Xanos from "../../classes/Xanos/index.js";
 import Dock from "../Dock/index.js";
 import Desktop from "../Desktop/index.js";
-import RenderScreen from "./RenderScreen.js";
 import useMobile from "../../hooks/useMobile.js";
+import XanosConfig from "../../classes/XanosConfig/index.js";
+import RenderApps from "./RenderApps.js";
+import XanosApps from "../../classes/XanosApps/index.js";
+import useActiveApp from "../../hooks/useActiveApp.js";
 
-export type OSRootProps = {
-  os: Xanos;
-};
-const OSRoot = ({ os }: OSRootProps) => {
-  const dock = os.config.dock;
+const OSRoot = () => {
+  const dock = XanosConfig.get("dock");
   const isSide = dock.placement === "left" || dock.placement === "right";
-  const DesktopView: any = os.config.get("renderDesktop", false) ?? Desktop;
-  const activeScreen = os.screen.getActiveScreen(false);
-  const screens = os.screen.getScreens();
+  const DesktopView: any = XanosConfig.get("renderDesktop", false) ?? Desktop;
   const isMobile = useMobile();
+  const activeApp = useActiveApp();
 
   useEffect(() => {
     if (isMobile) {
-      os.config.set("isMobile", true);
+      XanosConfig.set("isMobile", true);
     } else {
-      os.config.set("isMobile", false);
+      XanosConfig.set("isMobile", false);
     }
   }, [isMobile]);
 
@@ -69,7 +67,7 @@ const OSRoot = ({ os }: OSRootProps) => {
         right={0}
         zIndex={1}
       >
-        <Dock os={os} />
+        <Dock />
         <Stack
           flex={1}
           height={height}
@@ -77,49 +75,22 @@ const OSRoot = ({ os }: OSRootProps) => {
           overflow={"hidden"}
           position={"relative"}
         >
-          {screens.map((screen) => (
-            <Transition
-              key={screen.rid}
-              variant={"fade"}
-              open={activeScreen?.rid === screen.rid}
-              easing="smooth"
-              duration={300}
-              onExited={() => {}}
-            >
-              <Stack
-                height="100%"
-                width={"100%"}
-                position={"absolute"}
-                left={0}
-                right={0}
-                bottom={0}
-                top={0}
-                zIndex={activeScreen?.rid === screen.rid ? 1 : 0}
-              >
-                <RenderScreen screenId={screen.rid} os={os} />
-              </Stack>
-            </Transition>
-          ))}
+          <Stack height="100%" width="100%" position={"relative"}>
+            <RenderApps />
+          </Stack>
           {DesktopView && (
-            <Transition
-              variant={"fade"}
-              open={activeScreen ? false : true}
-              easing="smooth"
-              duration={300}
+            <Stack
+              height="100%"
+              width="100%"
+              position={"absolute"}
+              left={0}
+              right={0}
+              bottom={0}
+              top={0}
+              display={activeApp ? "none" : "block"}
             >
-              <Stack
-                height="100%"
-                width="100%"
-                position={"absolute"}
-                left={0}
-                right={0}
-                bottom={0}
-                top={0}
-                zIndex={activeScreen ? 0 : 1}
-              >
-                <DesktopView os={os} />
-              </Stack>
-            </Transition>
+              <DesktopView />
+            </Stack>
           )}
         </Stack>
       </Stack>
@@ -127,8 +98,8 @@ const OSRoot = ({ os }: OSRootProps) => {
   );
 };
 
-const Root = ({ os }: OSRootProps) => {
-  const _theme = os.config.get("theme", true);
+const Root = () => {
+  const _theme = XanosConfig.get("theme", true);
   const theme = useMemo(() => {
     return createTheme({
       name: `xanos-${_theme.mode}`,
@@ -141,7 +112,7 @@ const Root = ({ os }: OSRootProps) => {
 
   return (
     <AppRoot theme={theme} height="100vh" width="100vw" position={"relative"}>
-      <OSRoot os={os} />
+      <OSRoot />
     </AppRoot>
   );
 };

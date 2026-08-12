@@ -1,8 +1,6 @@
 import Stack from "@xanui/ui/Stack";
-import React, { useState } from "react";
-import Xanos from "../../classes/Xanos/index.js";
-import Box from "@xanui/ui/Box";
-import Menu from "@xanui/ui/Menu";
+import { useState } from "react";
+import XanosApps from "../../classes/XanosApps/index.js";
 import Text from "@xanui/ui/Text";
 import List from "@xanui/ui/List";
 import ListItem from "@xanui/ui/ListItem";
@@ -11,16 +9,10 @@ import IconButton from "@xanui/ui/IconButton";
 import ArrowUpward from "@xanui/icons/ArrowUpward";
 import Layer from "@xanui/ui/Layer";
 import { useNavigate } from "react-router-dom";
+import Box from "@xanui/ui/Box";
+import Menu from "@xanui/ui/Menu";
 
-const AppIcon = ({
-  app,
-  os,
-  onClick,
-}: {
-  app: any;
-  os: Xanos;
-  onClick: Function;
-}) => {
+const AppIcon = ({ app, onClick }: { app: any; onClick: Function }) => {
   const navigate = useNavigate();
 
   const [target, setTarget] = useState<any>();
@@ -44,7 +36,7 @@ const AppIcon = ({
         bgcolor={app.color || "brand.primary"}
         cursor={"pointer"}
         onClick={() => {
-          os.runApp(app.id);
+          XanosApps.run(app.id);
           onClick();
           navigate(`/${app.id}`);
         }}
@@ -109,22 +101,16 @@ const AppIcon = ({
 };
 
 type Props = {
-  os: Xanos;
   onClose: () => void;
 };
 
-const AppDrawer = ({ os, onClose }: Props) => {
-  const apps = os.apps.getApps();
+const AppDrawer = ({ onClose }: Props) => {
+  const apps = XanosApps.getApps();
   return (
     <Stack direction={"row"} flexWrap={"wrap"} gap={1} p={3}>
       {apps.map((app) => {
         return (
-          <AppIcon
-            key={`app-drawer-${app.id}`}
-            os={os}
-            app={app}
-            onClick={onClose}
-          />
+          <AppIcon key={`app-drawer-${app.id}`} app={app} onClick={onClose} />
         );
       })}
     </Stack>
@@ -132,11 +118,10 @@ const AppDrawer = ({ os, onClose }: Props) => {
 };
 
 export default {
-  open: (os: Xanos) => {
+  open: () => {
     const l = Layer.open(
       <Stack height="100%">
         <AppDrawer
-          os={os}
           onClose={() => {
             l.close();
           }}

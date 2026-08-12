@@ -1,11 +1,10 @@
 import createStore from "react-rock";
-import Xanos from "../Xanos/index.js";
 import { XanosActivitiesSchema } from "./schema.js";
 
 class XanosActivities {
   apps;
 
-  constructor(os: Xanos) {
+  constructor() {
     this.apps = createStore(XanosActivitiesSchema);
   }
 }

@@ -1,21 +1,19 @@
 import Stack from "@xanui/ui/Stack";
 import CircleProgress from "@xanui/ui/CircleProgress";
 import { useState } from "react";
-import Xanos from "../../classes/Xanos/index.js";
-import RenderScreen from "../OSRoot/RenderScreen.js";
+import RenderScreen from "../OSRoot/RenderApps.js";
 import { Iframe, Transition } from "@xanui/core";
 import Text from "@xanui/ui/Text";
 import IconButton from "@xanui/ui/IconButton";
 import ArrowUpward from "@xanui/icons/ArrowUpward";
 import Close from "@xanui/icons/Close";
-import type { XnaosScreenProps } from "../../classes/XanosScreen/schema.js";
 import useEmblaCarousel from "embla-carousel-react";
 import Layer from "@xanui/ui/Layer";
-import { useNavigate } from "react-router-dom";
+import XanosApps from "../../classes/XanosApps/index.js";
 
-type ItemProps = { os: Xanos; screen: XnaosScreenProps; onClose: Function };
+type ItemProps = { appId: string; onClose: Function };
 
-const Item = ({ os, screen, onClose }: ItemProps) => {
+const Item = ({ appId, onClose }: ItemProps) => {
   const [open, setOpen] = useState(true);
   const [entered, setEntered] = useState(false);
   return (
@@ -30,7 +28,7 @@ const Item = ({ os, screen, onClose }: ItemProps) => {
         }, 500);
       }}
       onExited={() => {
-        os.screen.closeScreen(screen.rid);
+        XanosApps.close(appId);
       }}
     >
       <Stack>
@@ -54,7 +52,7 @@ const Item = ({ os, screen, onClose }: ItemProps) => {
           radius={2}
           border={1}
           onClick={() => {
-            os.screen.setActive(screen.rid);
+            XanosApps.run(appId);
             onClose();
           }}
         >
@@ -76,7 +74,7 @@ const Item = ({ os, screen, onClose }: ItemProps) => {
                   height: 700,
                 }}
               >
-                <RenderScreen screenId={screen.rid} os={os} />
+                <RenderScreen />
               </Iframe>
             ) : (
               <Stack
@@ -95,8 +93,8 @@ const Item = ({ os, screen, onClose }: ItemProps) => {
   );
 };
 
-const RecentApps = ({ os, onClose }: { os: Xanos; onClose: () => void }) => {
-  const screens = os.screen.getScreens();
+const RecentApps = ({ onClose }: { onClose: () => void }) => {
+  const apps = XanosApps.getApps();
   const [emblaRef] = useEmblaCarousel({
     dragFree: true,
   });
@@ -104,18 +102,18 @@ const RecentApps = ({ os, onClose }: { os: Xanos; onClose: () => void }) => {
   return (
     <Stack height="100%" justifyContent={"center"} width={"100%"}>
       <Stack>
-        {screens.length === 0 && (
+        {apps.length === 0 && (
           <Stack height={700} textAlign={"center"}>
             <Text>No Recent Apps</Text>
           </Stack>
         )}
-        {!!screens.length && (
+        {!!apps.length && (
           <Stack ref={emblaRef} overflow={"hidden"}>
             <Stack direction={"row"}>
-              {screens.map((s) => {
+              {apps.map((app) => {
                 return (
-                  <Stack key={s.rid} flex="0 0 auto" minWidth={"0"} p={2}>
-                    <Item screen={s} os={os} onClose={onClose} />
+                  <Stack key={app.id} flex="0 0 auto" minWidth={"0"} p={2}>
+                    <Item appId={app.id} onClose={onClose} />
                   </Stack>
                 );
               })}
@@ -149,10 +147,10 @@ const RecentApps = ({ os, onClose }: { os: Xanos; onClose: () => void }) => {
 };
 
 export default {
-  open: (os: Xanos) => {
+  open: () => {
     const l = Layer.open(
       <Stack height="100%" width="100%">
-        <RecentApps os={os} onClose={() => l.close()} />
+        <RecentApps onClose={() => l.close()} />
       </Stack>,
       {
         transition: "zoomOver",

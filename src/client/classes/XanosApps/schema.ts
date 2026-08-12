@@ -29,7 +29,7 @@ export const XanosAppSchema = {
   shortcuts: xv.array(xv.object(XanosAppShorcutSchemaObject)).optional(),
 
   // internal
-  active: xv.boolean().default(false),
+  running: xv.boolean().default(false),
 };
 
 export type XanosAppSchemaProps = Infer<typeof XanosAppSchema>;

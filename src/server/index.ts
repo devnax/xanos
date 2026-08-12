@@ -1,12 +1,11 @@
 import express from "express";
-import { loadConfig } from "../core/config.js";
 import dev from "./dev.js";
 import template from "./template.js";
 import loader from "./loader.js";
 import statics from "./statics.js";
 import loadDatabase from "./bridge.js";
 import setup from "../core/setup.js";
-import { scanProject } from "../core/scanner.js";
+import loadEnv from "../core/env.js";
 
 const server = async ({
   port = 3000,
@@ -15,9 +14,12 @@ const server = async ({
   port?: number;
   development?: boolean;
 }) => {
+  const env = loadEnv(development ? "development" : "production");
+  for (const key in server) {
+    process.env[key] = env.server[key];
+  }
+
   const app = express();
-  const scan = await scanProject();
-  const appIds = scan.map((app) => app.id);
 
   statics(app);
   await loader(app);

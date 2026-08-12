@@ -4,10 +4,9 @@ import { Suspense } from "react";
 import { BrowserRouter } from "react-router-dom";
 import Stack from "@xanui/ui/Stack";
 import CircleProgress from "@xanui/ui/CircleProgress";
-import Xanos from "./classes/Xanos/index.js";
 import { AppProvider } from "./context/AppContext.js";
-import { OSProvider } from "./context/OSContext.js";
-export const XanosInstance = new Xanos();
+import OSRoot from "./views/OSRoot/index.js";
+import XanosApps from "./classes/XanosApps/index.js";
 
 export type Startup = {
   apps: Record<string, { app: any; config: any }>;
@@ -23,7 +22,7 @@ const startup = ({ apps }: Startup) => {
     const Icon = config.icon;
     const AppComponent = app;
 
-    XanosInstance.apps.create({
+    XanosApps.create({
       id: appId,
       name: config.name,
       color: config.color,
@@ -51,12 +50,13 @@ const startup = ({ apps }: Startup) => {
       },
     });
   }
+  console.log(import.meta.env.ENV);
 
   const container = document.getElementById("xroot");
   if (!container) throw new Error("Missing #xroot element");
   createRoot(container).render(
     <BrowserRouter>
-      <OSProvider os={XanosInstance}>{XanosInstance.render()}</OSProvider>
+      <OSRoot />
     </BrowserRouter>,
   );
 };

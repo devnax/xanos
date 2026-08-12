@@ -21,6 +21,7 @@
         "rootDir": "./src"
     },
     "include": [
+        "xanos-env.d.ts",
         "src"
     ],
     "exclude": [

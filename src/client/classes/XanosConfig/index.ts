@@ -49,4 +49,4 @@ class XanosConfig {
   }
 }
 
-export default XanosConfig;
+export default new XanosConfig();

@@ -1,6 +1,5 @@
 import Stack from "@xanui/ui/Stack";
-import React, { useState } from "react";
-import Xanos from "../../classes/Xanos/index.js";
+import { useState } from "react";
 import Box from "@xanui/ui/Box";
 import Menu from "@xanui/ui/Menu";
 import Text from "@xanui/ui/Text";
@@ -10,16 +9,9 @@ import PushPin from "@xanui/icons/PushPin";
 import IconButton from "@xanui/ui/IconButton";
 import ArrowUpward from "@xanui/icons/ArrowUpward";
 import Layer from "@xanui/ui/Layer";
+import XanosApps from "../../classes/XanosApps/index.js";
 
-const AppIcon = ({
-  app,
-  os,
-  onClick,
-}: {
-  app: any;
-  os: Xanos;
-  onClick: Function;
-}) => {
+const AppIcon = ({ app, onClick }: { app: any; onClick: Function }) => {
   const [target, setTarget] = useState<any>();
 
   return (
@@ -41,7 +33,7 @@ const AppIcon = ({
         bgcolor={app.color || "brand.primary"}
         cursor={"pointer"}
         onClick={() => {
-          os.runApp(app.id);
+          XanosApps.run(app.id);
           onClick();
         }}
         onContextMenu={(e) => {
@@ -105,22 +97,16 @@ const AppIcon = ({
 };
 
 type Props = {
-  os: Xanos;
   onClose: () => void;
 };
 
-const WidgetDrawer = ({ os, onClose }: Props) => {
-  const apps = os.apps.getApps();
+const WidgetDrawer = ({ onClose }: Props) => {
+  const apps = XanosApps.getApps();
   return (
     <Stack direction={"row"} flexWrap={"wrap"} gap={1} p={3}>
       {apps.map((app) => {
         return (
-          <AppIcon
-            key={`app-drawer-${app.id}`}
-            os={os}
-            app={app}
-            onClick={onClose}
-          />
+          <AppIcon key={`app-drawer-${app.id}`} app={app} onClick={onClose} />
         );
       })}
     </Stack>
@@ -128,11 +114,10 @@ const WidgetDrawer = ({ os, onClose }: Props) => {
 };
 
 export default {
-  open: (os: Xanos) => {
+  open: () => {
     const l = Layer.open(
       <Stack height="100%">
         <WidgetDrawer
-          os={os}
           onClose={() => {
             l.close();
           }}

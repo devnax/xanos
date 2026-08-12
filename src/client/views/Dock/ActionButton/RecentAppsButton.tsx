@@ -1,10 +1,9 @@
 import React from "react";
 import Layers from "@xanui/icons/Layers";
 import IconButton from "@xanui/ui/IconButton";
-import Xanos from "../../../classes/Xanos/index.js";
 import RecentApps from "../../RecentApps/index.js";
 
-const RecentAppsButton = ({ os }: { os: Xanos }) => {
+const RecentAppsButton = () => {
   return (
     <IconButton
       size={40}
@@ -15,7 +14,7 @@ const RecentAppsButton = ({ os }: { os: Xanos }) => {
       variant={"text"}
       color="default"
       onClick={() => {
-        RecentApps.open(os);
+        RecentApps.open();
       }}
     >
       <Layers />

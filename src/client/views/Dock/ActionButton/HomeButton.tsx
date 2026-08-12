@@ -1,9 +1,8 @@
 import IconButton from "@xanui/ui/IconButton";
 import CircleOutlined from "@xanui/icons/CircleOutlined";
-import Xanos from "../../../classes/Xanos/index.js";
 import { useNavigate } from "react-router-dom";
 
-const HomeButton = ({ os }: { os: Xanos }) => {
+const HomeButton = () => {
   const navigate = useNavigate();
   return (
     <IconButton
@@ -15,7 +14,6 @@ const HomeButton = ({ os }: { os: Xanos }) => {
       variant={"text"}
       color="default"
       onClick={() => {
-        os.screen.setDeactive();
         navigate("/");
       }}
     >

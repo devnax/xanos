@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import setup from "../../../core/setup.js";
 import logger from "../../../core/logger.js";
 import obfuscator from "./secure.js";
+import loadEnv from "../../../core/env.js";
 
 const cwd = process.cwd();
 const outDir = path.join(cwd, ".os");
@@ -13,13 +14,19 @@ const build = async (options: { secure?: string }) => {
   if (options.secure !== "false") {
     plugins.push(obfuscator());
   }
+  const env = loadEnv("production");
+  const define: any = {
+    __XANOS_CLIENT__: "true",
+  };
+  for (const key in env.client) {
+    define[`import.meta.env.${key}`] = JSON.stringify(env.client[key]);
+  }
+
   await setup();
   await viteBuild({
+    define,
     customLogger: logger,
     root: cwd,
-    define: {
-      __XANOS_CLIENT__: "true",
-    },
     plugins,
 
     build: {

@@ -1,6 +1,7 @@
 import express from "express";
 import { projectRoot } from "../core/paths.js";
 import template from "./template.js";
+import loadEnv from "../core/env.js";
 
 const dev = async (app: express.Express) => {
   const [{ createServer }, { default: react }, { default: logger }] =
@@ -10,7 +11,15 @@ const dev = async (app: express.Express) => {
       import("../core/logger.js"),
     ]);
 
+  const env = loadEnv("development");
+  const define: any = {};
+
+  for (const key in env.client) {
+    define[`import.meta.env.${key}`] = JSON.stringify(env.client[key]);
+  }
+
   const vite = await createServer({
+    define,
     root: projectRoot,
     plugins: [react()],
     customLogger: logger,
