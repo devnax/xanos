@@ -1,26 +1,24 @@
-import { xt } from "xansql";
-import { USER_ROLES, USER_STATUS } from "./constant.js";
+import { SchemaShape, xt } from "xansql";
 import { Model } from "xansql";
+import RoleSchema from "./Role.js";
 
-export class UserModel extends Model {
+class UserSchema extends Model {
   get table() {
     return "users";
   }
-  schema() {
+  schema(): SchemaShape {
     return {
       id: xt.id(),
-      agent: xt.one(UserModel, "agents").nullable(),
+      // agent: xt.one(AuthSchema, "agents").nullable(),
       name: xt.string().min(3).max(100),
       email: xt.email(),
       password: xt.password(),
       username: xt.username().nullable(),
-      phone: xt.phone().index().nullable(),
-      status: xt.enum(USER_STATUS).index().default(USER_STATUS.ACTIVE),
-      role: xt.enum(USER_ROLES).index().default(USER_ROLES.AGENT_STUDENT),
-      photo: xt.photo().nullable(),
-
+      role: xt.one(RoleSchema, "users").nullable(),
       created_at: xt.createdAt(),
       updated_at: xt.updatedAt(),
     };
   }
 }
+
+export default UserSchema;

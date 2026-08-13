@@ -3,6 +3,7 @@ import pc from "picocolors";
 import { frameworkDir } from "./paths.js";
 import path from "path";
 import fs from "fs";
+import youid from "youid";
 
 export const verifyAppName = (appName: string) => {
   if (!/^[a-z][a-z0-9_-]{2,}$/.test(appName)) {
@@ -20,3 +21,8 @@ export function getFrameworkPackageJson() {
   const packageJsonPath = path.join(frameworkDir, "package.json");
   return JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
 }
+
+export const makeOSID = () => {
+  const uid = youid();
+  return uid.substring(0, 8);
+};

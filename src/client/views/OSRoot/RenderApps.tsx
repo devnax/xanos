@@ -5,6 +5,7 @@ import useActiveApp from "../../hooks/useActiveApp.js";
 const RenderApps = () => {
   const runningApps = XanosApps.getRunningApps();
   const activeApp = useActiveApp();
+
   return (
     <Stack height="100%" width="100%">
       {runningApps.map((app) => {

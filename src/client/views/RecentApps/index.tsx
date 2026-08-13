@@ -74,7 +74,7 @@ const Item = ({ appId, onClose }: ItemProps) => {
                   height: 700,
                 }}
               >
-                <RenderScreen />
+                {/* <RenderScreen /> */}
               </Iframe>
             ) : (
               <Stack
@@ -94,10 +94,10 @@ const Item = ({ appId, onClose }: ItemProps) => {
 };
 
 const RecentApps = ({ onClose }: { onClose: () => void }) => {
-  const apps = XanosApps.getApps();
   const [emblaRef] = useEmblaCarousel({
     dragFree: true,
   });
+  const apps = XanosApps.getRunningApps();
 
   return (
     <Stack height="100%" justifyContent={"center"} width={"100%"}>

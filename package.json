@@ -2,34 +2,38 @@
   "name": "xanos",
   "version": "1.0.5",
   "description": "",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "./dist/types.d.ts",
   "bin": "./dist/bin/xanos.js",
   "type": "module",
   "files": [
     "dist"
   ],
   "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
     "./startup": {
       "import": "./dist/client/startup.js",
       "require": "./dist/client/startup.js"
-    },
-    "./core": {
-      "import": "./dist/core/index.js",
-      "require": "./dist/core/index.js"
     },
     "./database": {
       "import": "./dist/database/index.js",
       "require": "./dist/database/index.js"
     },
+    "./permission": {
+      "import": "./dist/permission/index.js",
+      "require": "./dist/permission/index.js"
+    },
     "./server": {
-      "import": "./dist/server/index.js",
-      "require": "./dist/server/index.js"
+      "import": "./dist/server/package.js",
+      "require": "./dist/server/package.js"
     },
     "./client": {
-      "import": "./dist/client/index.js",
-      "require": "./dist/client/index.js"
+      "import": "./dist/client/package.js",
+      "require": "./dist/client/package.js"
     }
   },
   "scripts": {
@@ -64,8 +68,9 @@
     "securequ": "^1.1.31",
     "tslib": "^2.8.1",
     "vite": "^8.1.5",
-    "xansql": "^1.1.27",
-    "xanv": "^1.1.30"
+    "xansql": "^1.1.28",
+    "xanv": "^1.1.30",
+    "youid": "^1.0.13"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

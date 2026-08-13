@@ -1,6 +1,7 @@
 import { Xansql, type XansqlFileMeta } from "xansql";
 import { XansqlBridgeDialect } from "xansql/dialects/Bridge";
-import { UserModel } from "./schema/user.js";
+import UserSchema from "./schema/User.js";
+import RoleSchema from "./schema/Role.js";
 
 declare const __XANOS_CLIENT__: boolean;
 
@@ -74,5 +75,5 @@ const database = new Xansql({
 });
 
 export default database;
-
-export const User = database.model(UserModel);
+export const User = database.model(UserSchema);
+export const UserRole = database.model(RoleSchema);

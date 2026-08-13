@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useLayoutEffect, useMemo } from "react";
 import { AppRoot, createTheme } from "@xanui/core";
 import Stack from "@xanui/ui/Stack";
 import Dock from "../Dock/index.js";
@@ -15,6 +15,12 @@ const OSRoot = () => {
   const DesktopView: any = XanosConfig.get("renderDesktop", false) ?? Desktop;
   const isMobile = useMobile();
   const activeApp = useActiveApp();
+
+  useLayoutEffect(() => {
+    if (activeApp?.id && !XanosApps.getRunningApps().length) {
+      XanosApps.run(activeApp?.id);
+    }
+  }, []);
 
   useEffect(() => {
     if (isMobile) {

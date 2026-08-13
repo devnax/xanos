@@ -4,6 +4,8 @@ import _import from "../../../core/import.js";
 import { fileURLToPath } from "url";
 import { scanProject } from "../../../core/scanner.js";
 import logger from "../../../core/logger.js";
+import { UserRole } from "../../../database/index.js";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const migrate = async (options: { force?: boolean }) => {
@@ -24,16 +26,28 @@ const migrate = async (options: { force?: boolean }) => {
       return;
     }
   }
-  const dbpath = path.join(__dirname, "../../database/index.js");
+  const dbpath = path.join(__dirname, "../../../database/index.js");
   const db: any = await _import(dbpath);
   for (let { files } of scan) {
     if (files.schema) {
       await _import(files.schema);
     }
   }
+
   logger.info("Running database migrations...");
   await db.default.migrate(force);
   logger.info("Database migrations completed successfully.");
+
+  await UserRole.create({
+    data: {
+      name: "admin",
+      type: "organization",
+      permission: {
+        grant: true,
+        modules: {},
+      },
+    },
+  });
 };
 
 export default migrate;

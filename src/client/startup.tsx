@@ -50,7 +50,6 @@ const startup = ({ apps }: Startup) => {
       },
     });
   }
-  console.log(import.meta.env.ENV);
 
   const container = document.getElementById("xroot");
   if (!container) throw new Error("Missing #xroot element");

@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import type { MakeRowType } from "react-rock/types";
 import { xv } from "xanv";
 import type { Infer } from "xanv";
@@ -21,9 +22,9 @@ export const XanosAppShorcutSchemaObject = {
 export const XanosAppSchema = {
   id: xv.string(),
   name: xv.string().max(50),
-  icon: xv.any(),
+  icon: xv.any<ReactElement>(),
   color: xv.string().optional(),
-  render: xv.any().optional(),
+  render: xv.functionComponent({}).optional(),
   onContextMenu: xv.any().optional(),
   widgets: xv.array(xv.object(XanosAppWidgetSchemaObject)).optional(),
   shortcuts: xv.array(xv.object(XanosAppShorcutSchemaObject)).optional(),

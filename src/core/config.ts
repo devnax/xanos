@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
-import type { XanosConfig } from "./index.js";
 import _import from "./import.js";
+import { XanosConfig } from "../types/index.js";
 
 const configPath = path.resolve(process.cwd(), "xanos.config.ts");
 let loadedConfig: XanosConfig | null = null;

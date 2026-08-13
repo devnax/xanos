@@ -3,7 +3,7 @@ import XanosApps from "../classes/XanosApps";
 
 const useActiveApp = () => {
   const location = useLocation();
-  const appId = location.pathname.slice(1);
+  const appId = location.pathname.split("/")[1];
   const activeApp = XanosApps.getApp(appId, true);
   return activeApp;
 };
