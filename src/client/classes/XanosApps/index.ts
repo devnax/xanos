@@ -54,7 +54,10 @@ class XanosApps {
   }
 
   getApps(disableObservation = false) {
-    return this.store.rows(disableObservation);
+    return this.store.find({
+      where: { hidden: false },
+      disableObservation,
+    });
   }
 
   getApp(id: string, disableObservation: boolean = false) {

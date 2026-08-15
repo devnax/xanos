@@ -1,7 +1,6 @@
 import { SchemaShape, xt } from "xansql";
 import { Model } from "xansql";
 import UserSchema from "./User.js";
-import { permission } from "node:process";
 
 export type RoleSchemaType = {
   id: number;

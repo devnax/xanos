@@ -13,6 +13,13 @@ const setup = async () => {
   const apps = await scanProject();
   const lines: string[] = [];
   const root = process.cwd();
+
+  const slientConfig = {
+    name: config.name,
+    theme: config.theme,
+    dock: config.dock,
+  };
+
   lines.push(
     `await import(${isWorkingFrameworkDir ? '"./src/database/index.ts"' : '"xanos/database"'});`,
   );
@@ -34,6 +41,8 @@ const setup = async () => {
   lines.push(
     `import XanosStartup from ${isWorkingFrameworkDir ? '"./src/client/startup.tsx"' : '"xanos/startup"'};`,
   );
+  lines.push(`const config:any = ${JSON.stringify(slientConfig, null, 2)};`);
+
   // import all config files
   for (const app of apps) {
     if (app.type === "app") {
@@ -65,7 +74,7 @@ const setup = async () => {
   }
   lines.push("};");
   lines.push("");
-  lines.push("XanosStartup({ apps });");
+  lines.push("XanosStartup({ apps, config });");
 
   fs.writeFileSync(
     path.join(root, "xanos.startup.ts"),

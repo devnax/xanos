@@ -12,14 +12,9 @@ export async function loadConfig(): Promise<XanosConfig> {
   try {
     await fs.promises.access(configPath, fs.constants.F_OK);
   } catch {
-    return {
-      database: {
-        engine: "sqlite",
-        sqlite: "./database/xanos.db",
-      },
-      files: "./public/uploads",
-      customApps: [],
-    };
+    throw new Error(
+      `xanos.config.ts not found in the root directory. Please create one to proceed.`,
+    );
   }
 
   try {

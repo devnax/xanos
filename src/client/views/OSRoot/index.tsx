@@ -8,6 +8,7 @@ import XanosConfig from "../../classes/XanosConfig/index.js";
 import RenderApps from "./RenderApps.js";
 import XanosApps from "../../classes/XanosApps/index.js";
 import useActiveApp from "../../hooks/useActiveApp.js";
+import ViewBox from "@xanui/ui/ViewBox";
 
 const OSRoot = () => {
   const dock = XanosConfig.get("dock");
@@ -50,7 +51,12 @@ const OSRoot = () => {
   }
 
   return (
-    <Stack>
+    <ViewBox
+      height="100vh"
+      width="100vw"
+      position={"relative"}
+      overflow={"hidden"}
+    >
       <Stack
         height="100%"
         width="100%"
@@ -100,7 +106,7 @@ const OSRoot = () => {
           )}
         </Stack>
       </Stack>
-    </Stack>
+    </ViewBox>
   );
 };
 
@@ -111,7 +117,7 @@ const Root = () => {
       name: `xanos-${_theme.mode}`,
       mode: _theme.mode,
       colors: {
-        brand: _theme.accentColor as any,
+        brand: _theme.color as any,
       },
     });
   }, [_theme]);

@@ -40,6 +40,15 @@ function scaffoldProject(dest: string, name: string): void {
     `import type { XanosConfig } from "xanos/core";
 
 const config: XanosConfig = {
+  name: "Xanos",
+  theme: {
+    color: "#FED480",
+    mode: "dark",
+  },
+  dock: {
+    mode: "os",
+    placement: "left",
+  },
   database: {
     engine: "sqlite",
     sqlite: "db.sqlite",

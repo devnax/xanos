@@ -2,6 +2,7 @@ import type { InferValue } from "xanv";
 import { xv } from "xanv";
 
 export const XanosConfigSchema = {
+  name: xv.string().default("Xanos"),
   renderDesktop: xv.any().nullable().default(null),
   isMobile: xv.boolean().default(false),
   allow: xv
@@ -27,31 +28,15 @@ export const XanosConfigSchema = {
       apps: true,
       privacy: true,
     }),
-
-  auth: xv
-    .object({
-      enabled: xv.boolean().default(false),
-      profile: xv
-        .object({
-          avatar: xv.string(),
-          name: xv.string(),
-          email: xv.string().email(),
-        })
-        .nullable(),
-    })
-    .default({
-      enabled: false,
-      profile: null,
-    }),
-
+  auth: xv.boolean().default(false),
   theme: xv
     .object({
       mode: xv.enum(["dark", "light"] as const).default("dark"),
-      accentColor: xv.string().default("#1e90ff"),
+      color: xv.string().default("#FED480"),
     })
     .default({
       mode: "dark",
-      accentColor: "#1e90ff",
+      color: "#FED480",
     }),
   dock: xv
     .object({

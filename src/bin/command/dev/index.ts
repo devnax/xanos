@@ -3,6 +3,7 @@ import chokidar from "chokidar";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "url";
 import logger from "../../../core/logger.js";
+import { isWorkingFrameworkDir } from "../../../core/paths.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const filePath = path.join(__dirname, "./server.js");
 
@@ -20,13 +21,15 @@ function restart() {
 
 const dev = () => {
   start();
-  let watcher = chokidar.watch(
-    [`apps`, `xanos.config.ts`, `xanos.startup.ts`],
-    {
-      cwd: process.cwd(),
-      ignoreInitial: true,
-    },
-  );
+
+  const dirs = [`apps`, `xanos.config.ts`];
+  if (isWorkingFrameworkDir) {
+    dirs.push(`dist/server`);
+  }
+  let watcher = chokidar.watch(dirs, {
+    cwd: process.cwd(),
+    ignoreInitial: true,
+  });
 
   watcher.on("all", (event, file) => {
     const normalized = file.replaceAll("\\", "/");
@@ -35,6 +38,7 @@ const dev = () => {
       normalized.endsWith("/schema/index.ts") ||
       normalized.endsWith("/api/index.ts") ||
       normalized.endsWith("xanos.config.ts") ||
+      (normalized.includes("dist/server/") && normalized.endsWith(".js")) ||
       (event === "unlink" && normalized.endsWith("xanos.startup.ts"))
     ) {
       logger.info(`Detected change in ${normalized}. Restarting server...`);

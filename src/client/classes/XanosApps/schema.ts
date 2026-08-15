@@ -29,6 +29,8 @@ export const XanosAppSchema = {
   widgets: xv.array(xv.object(XanosAppWidgetSchemaObject)).optional(),
   shortcuts: xv.array(xv.object(XanosAppShorcutSchemaObject)).optional(),
 
+  hidden: xv.boolean().default(false),
+
   // internal
   running: xv.boolean().default(false),
 };
