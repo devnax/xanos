@@ -1,5 +1,5 @@
 import { SecurequServer } from "securequ";
-import { User } from "../../database/index.js";
+import { User } from "../../../database/index.js";
 
 const signin = async (server: SecurequServer) => {
   server.post("/signin", async (req) => {

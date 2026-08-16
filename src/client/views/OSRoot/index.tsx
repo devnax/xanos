@@ -9,6 +9,7 @@ import RenderApps from "./RenderApps.js";
 import XanosApps from "../../classes/XanosApps/index.js";
 import useActiveApp from "../../hooks/useActiveApp.js";
 import ViewBox from "@xanui/ui/ViewBox";
+import AuthForm from "../Auth/index.js";
 
 const OSRoot = () => {
   const dock = XanosConfig.get("dock");
@@ -124,7 +125,8 @@ const Root = () => {
 
   return (
     <AppRoot theme={theme} height="100vh" width="100vw" position={"relative"}>
-      <OSRoot />
+      <AuthForm />
+      {/* <OSRoot /> */}
     </AppRoot>
   );
 };

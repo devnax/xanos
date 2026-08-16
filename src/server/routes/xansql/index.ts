@@ -1,5 +1,5 @@
 import { XansqlBridgeServer } from "xansql/dialects/Bridge";
-import database, { BASE_PATH } from "../database/index.js";
+import database, { BASE_PATH } from "../../../database/index.js";
 import express, { Express } from "express";
 
 const loadDatabase = async (app: Express, isDev = false) => {

@@ -1,7 +1,7 @@
 import { Xansql, type XansqlFileMeta } from "xansql";
 import { XansqlBridgeDialect } from "xansql/dialects/Bridge";
 import UserSchema from "./schema/User.js";
-import RoleSchema from "./schema/Role.js";
+import RoleSchema from "./schema/UserRole.js";
 
 declare const __XANOS_CLIENT__: boolean;
 

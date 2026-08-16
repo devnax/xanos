@@ -44,7 +44,7 @@
   "author": "Naxrul Ahmed",
   "license": "ISC",
   "dependencies": {
-    "@xanui/core": "^1.3.36",
+    "@xanui/core": "^1.3.37",
     "@xanui/icons": "^1.1.14",
     "@xanui/ui": "^1.2.24",
     "better-sqlite3": "^13.0.3",
