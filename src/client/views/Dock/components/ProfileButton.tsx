@@ -5,7 +5,7 @@ import IconButton from "@xanui/ui/IconButton";
 import Setting from "@xanui/icons/Settings";
 import { useNavigate } from "react-router-dom";
 import useActiveApp from "../../../hooks/useActiveApp";
-import Query from "../../../libs/Query";
+import Query from "../../../libs/Api";
 
 export type ProfileButtonProps = {
   mode: "compact" | "full";

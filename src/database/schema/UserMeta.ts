@@ -11,7 +11,7 @@ class UserMetaSchema extends Model {
       id: xt.id(),
       key: xt.string().min(2).max(100),
       value: xt.string().min(2).max(100),
-      user: xt.one(UserSchema, "metas").nullable(),
+      user: xt.one(UserSchema, "metas"),
       created_at: xt.createdAt(),
       updated_at: xt.updatedAt(),
     };

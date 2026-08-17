@@ -6,7 +6,7 @@ import statics from "./statics.js";
 import loadDatabase from "./routes/xansql/index.js";
 import setup from "../core/setup.js";
 import loadEnv from "../core/env.js";
-import query from "./routes/query/index.js";
+import loadApi from "./routes/api/index.js";
 import cookieParser from "./middlewares/cookieParser.js";
 
 const server = async ({
@@ -28,7 +28,7 @@ const server = async ({
   await loader(app);
   await setup();
   await loadDatabase(app, development);
-  query(app, development ?? false);
+  await loadApi(app, development ?? false);
 
   if (development) {
     await dev(app);

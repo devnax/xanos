@@ -6,3 +6,4 @@ dist
 xanos.startup.ts
 db.sqlite
 xanos-env.d.ts
+db.sqlite

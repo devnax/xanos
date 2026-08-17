@@ -1,12 +1,15 @@
 import Stack from "@xanui/ui/Stack";
 import Text from "@xanui/ui/Text";
 import Input from "@xanui/ui/Input";
+import PasswordInput from "@xanui/ui/PasswordInput";
 import Button from "@xanui/ui/Button";
 import Link from "@xanui/ui/Link";
 import AuthFormState from "./state";
+import Api from "../../libs/Api";
+import database, { User } from "../../../database";
 
 const LoginForm = () => {
-  const email = AuthFormState.get("email");
+  const username = AuthFormState.get("username");
   const password = AuthFormState.get("password");
   return (
     <Stack
@@ -26,22 +29,22 @@ const LoginForm = () => {
       </Stack>
       <Stack gap={1}>
         <Input
-          placeholder="Enter your email"
+          placeholder="Enter your username or email"
           size="sm"
-          label="Email"
-          value={email}
+          label="Username or Email"
+          variant="outline"
+          value={username}
           onFocus={() => {
-            AuthFormState.clearError("email");
+            AuthFormState.clearError("username");
           }}
           onChange={(e) => {
-            AuthFormState.set("email", e.target.value);
+            AuthFormState.set("username", e.target.value);
           }}
-          error={!!AuthFormState.getError("email")}
-          helperText={AuthFormState.getError("email")}
+          error={!!AuthFormState.getError("username")}
+          helperText={AuthFormState.getError("username")}
         />
-        <Input
+        <PasswordInput
           placeholder="Enter your password"
-          type="password"
           size="sm"
           label="Password"
           value={password}
@@ -60,11 +63,20 @@ const LoginForm = () => {
         <Button
           size="sm"
           mt={1}
-          onClick={() => {
-            const isValid = AuthFormState.validate();
+          onClick={async () => {
+            const isValid =
+              AuthFormState.isValid("username") &&
+              AuthFormState.isValid("password");
             if (isValid) {
-              // Perform login logic here
-              console.log("Logging in with:", email, password);
+              const res = await Api.post("/signin", {
+                body: {
+                  username,
+                  password,
+                },
+              });
+              console.log(res);
+
+              console.log("Logging in with:", username, password);
             } else {
               console.log("Validation errors:", AuthFormState.getErrors());
             }

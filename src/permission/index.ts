@@ -11,10 +11,10 @@ export type Permissions = Record<
 >;
 
 class Permission<P extends Permissions> {
-  readonly permissions: P;
+  readonly permissions: (role: string) => P;
   readonly module: string;
 
-  constructor(module: string, permissions: P) {
+  constructor(module: string, permissions: (role: string) => P) {
     this.module = module;
     this.permissions = permissions;
     PermissionList.set(module, this);

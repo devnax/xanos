@@ -21,6 +21,10 @@ const config = {
   },
   files: "./public/uploads",
   customApps: [],
+  secret: {
+    public: "wellknownclientsecret",
+    private: "wellknownserversecret",
+  },
 };
 
 export default config;

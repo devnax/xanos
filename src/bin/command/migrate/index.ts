@@ -4,7 +4,8 @@ import _import from "../../../core/import.js";
 import { fileURLToPath } from "url";
 import { scanProject } from "../../../core/scanner.js";
 import logger from "../../../core/logger.js";
-import { UserRole } from "../../../database/index.js";
+import { User, UserRole } from "../../../database/index.js";
+import pc from "picocolors";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -35,19 +36,45 @@ const migrate = async (options: { force?: boolean }) => {
   }
 
   logger.info("Running database migrations...");
-  await db.default.migrate(force);
+  try {
+    await db.default.migrate(force);
+  } catch (error: any) {
+    logger.error(`Migration failed: ${error.message}`);
+  }
   logger.info("Database migrations completed successfully.");
 
-  await UserRole.create({
-    data: {
-      name: "admin",
-      type: "organization",
-      permission: {
-        grant: true,
-        modules: {},
+  try {
+    const roles = await UserRole.create({
+      data: {
+        name: "admin",
+        type: "organization",
+        permission: {},
       },
-    },
-  });
+    });
+
+    if (roles) {
+      const role = roles[0];
+      await User.create({
+        data: {
+          name: "Admin",
+          email: "admin@xanos.com",
+          username: "admin",
+          password: "admin123",
+          role: role.id,
+        },
+      });
+      console.log("");
+      console.log(
+        `${pc.green("Admin user credentials:")}\n` +
+          `${pc.yellow("Username:")} admin\n` +
+          `${pc.yellow("Email:")} admin@xanos.com\n` +
+          `${pc.yellow("Password:")} admin123`,
+      );
+      console.log("");
+    }
+  } catch (error: any) {
+    logger.error(error.message);
+  }
 };
 
 export default migrate;

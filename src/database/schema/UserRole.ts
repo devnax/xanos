@@ -16,26 +16,12 @@ class UserRoleSchema extends Model {
     return "user_roles";
   }
 
-  protected async beforeCreate({ data }: any) {
-    if (data.is_root === true) {
-      const existingAdminRole = await this.findOne({
-        where: { is_root: true },
-      });
-      if (existingAdminRole) {
-        throw new Error(
-          "A root admin role already exists. Only one admin role is allowed.",
-        );
-      }
-    }
-  }
-
   schema(): SchemaShape {
     return {
       id: xt.id(),
       name: xt.string().min(2).max(30),
       type: xt.enum(["admin", "organization", "user"]).default("user"),
-      is_root: xt.boolean().default(false),
-      creator: xt.one(UserSchema, "creator_roles").nullable(),
+      creator: xt.one(UserSchema, "creator_roles").nullable(), // if null then this is root admin role
       visibility: xt.enum(["public", "private"]).default("private"),
       comments: xt.string().max(100).nullable(),
       permission: xt
@@ -56,6 +42,17 @@ class UserRoleSchema extends Model {
 
       users: xt.many(UserSchema, "role"),
     };
+  }
+
+  protected async beforeCreate({ data }: any) {
+    if (!data.creator) {
+      const count = await this.count({
+        creator: null,
+      });
+      if (count) {
+        throw new Error(`creator is required for ${this.table} table`);
+      }
+    }
   }
 }
 

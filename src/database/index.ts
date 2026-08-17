@@ -2,6 +2,9 @@ import { Xansql, type XansqlFileMeta } from "xansql";
 import { XansqlBridgeDialect } from "xansql/dialects/Bridge";
 import UserSchema from "./schema/User.js";
 import RoleSchema from "./schema/UserRole.js";
+import UserBranchSchema from "./schema/UserBranch.js";
+import UserMetaSchema from "./schema/UserMeta.js";
+import { XANSQL_BASE_PATH } from "../core/constant.js";
 
 declare const __XANOS_CLIENT__: boolean;
 
@@ -12,7 +15,6 @@ const isClient =
 
 let dialect: any;
 let file: any;
-export const BASE_PATH = "/query";
 
 if (!isClient) {
   const fs = await import("fs");
@@ -63,7 +65,7 @@ if (!isClient) {
   };
 } else {
   const { protocol, host } = window.location;
-  const client = XansqlBridgeDialect(`${protocol}//${host}${BASE_PATH}`);
+  const client = XansqlBridgeDialect(`${protocol}//${host}${XANSQL_BASE_PATH}`);
   dialect = client.dialect;
   file = client.file;
 }
@@ -77,3 +79,5 @@ const database = new Xansql({
 export default database;
 export const User = database.model(UserSchema);
 export const UserRole = database.model(RoleSchema);
+export const UserBranch = database.model(UserBranchSchema);
+export const UserMeta = database.model(UserMetaSchema);

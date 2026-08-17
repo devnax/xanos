@@ -3,13 +3,13 @@ import { Express } from "express";
 import express from "express";
 import path from "path";
 import fs from "fs";
-import signin from "./signin.js";
+import signin from "./auth/signin.js";
+import { API_BASE_PATH } from "../../../core/constant.js";
 
-const query = (app: Express, isDev: boolean) => {
+const loadApi = async (app: Express, isDev: boolean) => {
   const server = new SecurequServer({
     mode: isDev ? "development" : "production",
-    // debug: isDev,
-    basepath: "/_query",
+    basepath: API_BASE_PATH,
     clients: [
       {
         origin: "*",
@@ -37,9 +37,8 @@ const query = (app: Express, isDev: boolean) => {
   });
 
   signin(server);
-
   const raw = express.raw({ type: server.CONTENT_TYPE, limit: "10mb" });
-  app.use("/_query{/*path}", raw, async (req, res) => {
+  app.use(`${API_BASE_PATH}{/*path}`, raw, async (req, res) => {
     const response = await server.listen(req.originalUrl, {
       body: req.body,
       headers: req.headers as { [key: string]: string },
@@ -49,4 +48,4 @@ const query = (app: Express, isDev: boolean) => {
   });
 };
 
-export default query;
+export default loadApi;
