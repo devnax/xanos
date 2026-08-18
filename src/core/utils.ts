@@ -26,3 +26,7 @@ export const makeOSID = () => {
   const uid = youid();
   return uid.substring(0, 8);
 };
+
+export const isObject = (value: any): boolean => {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+};

@@ -15,7 +15,7 @@ const setup = async () => {
   const root = process.cwd();
 
   const slientConfig = {
-    name: config.name,
+    name: config.identity.name,
     theme: config.theme,
     dock: config.dock,
   };

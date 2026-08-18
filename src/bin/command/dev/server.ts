@@ -5,7 +5,7 @@ import path from "path";
 import { frameworkDir } from "../../../core/paths.js";
 
 const dev = async () => {
-  const port = 3000;
+  const port = 80;
   const packageFilePath = path.join(frameworkDir, "package.json");
   const packageJson = fs.readFileSync(packageFilePath, "utf-8");
   const packageData = JSON.parse(packageJson);

@@ -45,5 +45,4 @@ export const printServerInfo = (options: {
   if (options.env?.length) {
     console.log(`${pc.dim("-")} Environments: ${options.env.join(", ")}`);
   }
-  console.log();
 };

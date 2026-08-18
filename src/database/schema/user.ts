@@ -16,6 +16,9 @@ class UserSchema extends Model {
       email: xt.email(),
       password: xt.password(),
       username: xt.username().nullable(),
+      status: xt
+        .enum(["active", "pending", "inactive", "suspended"])
+        .default("active"),
       role: xt.one(RoleSchema, "users"),
       creator: xt.one(UserSchema, "creator_users").nullable(),
       organization: xt.one(UserSchema, "organization_users").nullable(),

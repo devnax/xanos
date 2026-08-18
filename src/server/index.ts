@@ -7,10 +7,10 @@ import loadDatabase from "./routes/xansql/index.js";
 import setup from "../core/setup.js";
 import loadEnv from "../core/env.js";
 import loadApi from "./routes/api/index.js";
-import cookieParser from "./middlewares/cookieParser.js";
+import applyMiddlewares from "./applyMiddlewares.js";
 
 const server = async ({
-  port = 3000,
+  port = 80,
   development,
 }: {
   port?: number;
@@ -22,9 +22,8 @@ const server = async ({
   }
 
   const app = express();
-  app.use(cookieParser);
-
   statics(app, development ?? false);
+  await applyMiddlewares(app);
   await loader(app);
   await setup();
   await loadDatabase(app, development);
