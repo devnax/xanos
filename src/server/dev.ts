@@ -25,7 +25,7 @@ const dev = async (app: express.Express) => {
     customLogger: logger,
     server: {
       middlewareMode: true,
-      allowedHosts: ["xan.os", "dev.io"],
+      allowedHosts: [],
     },
     appType: "custom",
   });

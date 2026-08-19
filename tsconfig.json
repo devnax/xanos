@@ -19,11 +19,10 @@
         "declaration": true,
         "jsx": "react-jsx",
         "outDir": "./dist",
-        "rootDir": "./"
+        "rootDir": "./src"
     },
     "include": [
         "xanos-env.d.ts",
-        "xanos.config.ts",
         "src"
     ],
     "exclude": [

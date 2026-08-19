@@ -33,15 +33,18 @@ if (!isClient) {
     process.exit(1);
   }
 
+  const engine = config.database.engine;
+  const dbConfig = config.database[engine];
+
   switch (config.database.engine) {
     case "sqlite":
-      dialect = SqliteDialect(config.database.sqlite as any);
+      dialect = SqliteDialect(dbConfig as any);
       break;
     case "mysql":
-      dialect = MysqlDialect(config.database.mysql as any);
+      dialect = MysqlDialect(dbConfig as any);
       break;
     case "postgres":
-      dialect = PostgresDialect(config.database.postgres as any);
+      dialect = PostgresDialect(dbConfig as any);
       break;
   }
 

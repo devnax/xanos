@@ -31,19 +31,19 @@ export async function scanProject(): Promise<AppEntry[]> {
   const appNames = readDirs(appsDir);
   const config = await loadConfig();
 
-  for (let appId of config.customApps) {
-    apps.push({
-      type: "custom",
-      id: appId,
-      dir: "",
-      files: {
-        app: `${appId}/app`,
-        config: `${appId}/config`,
-        api: `${appId}/api`,
-        schema: `${appId}/schema`,
-      },
-    });
-  }
+  // for (let appId of config.customApps) {
+  //   apps.push({
+  //     type: "custom",
+  //     id: appId,
+  //     dir: "",
+  //     files: {
+  //       app: `${appId}/app`,
+  //       config: `${appId}/config`,
+  //       api: `${appId}/api`,
+  //       schema: `${appId}/schema`,
+  //     },
+  //   });
+  // }
 
   for (const name of appNames) {
     const verify = verifyAppName(name);

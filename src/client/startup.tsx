@@ -8,13 +8,13 @@ import { AppProvider } from "./context/AppContext.js";
 import OSRoot from "./views/OSRoot/index.js";
 import XanosApps from "./classes/XanosApps/index.js";
 import XanosConfig from "./classes/XanosConfig/index.js";
-import type { OSConfigClient } from "../types/index.js";
+// import type { OSConfigClient } from "../types/index.js";
 import Settings from "@xanui/icons/Settings";
 const SettingsView = lazy(() => import("./views/Settings/index.js"));
 
 export type Startup = {
   apps: Record<string, { app: any; config: any }>;
-  config: OSConfigClient;
+  config: any;
 };
 
 const startup = ({ apps, config }: Startup) => {
@@ -85,12 +85,12 @@ const startup = ({ apps, config }: Startup) => {
   const container = document.getElementById("xroot");
   if (!container) throw new Error("Missing #xroot element");
 
-  XanosConfig.set("name", config.name);
-  XanosConfig.set("dock", config.dock);
-  XanosConfig.set("theme", {
-    color: config.theme.color,
-    mode: config.theme.mode === "dark" ? "dark" : "light",
-  });
+  // XanosConfig.set("name", config.name);
+  // XanosConfig.set("dock", config.dock);
+  // XanosConfig.set("theme", {
+  //   color: config.theme.color,
+  //   mode: config.theme.mode === "dark" ? "dark" : "light",
+  // });
 
   createRoot(container).render(
     <BrowserRouter>

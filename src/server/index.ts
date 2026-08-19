@@ -8,13 +8,14 @@ import setup from "../core/setup.js";
 import loadEnv from "../core/env.js";
 import loadApi from "./routes/api/index.js";
 import applyMiddlewares from "./applyMiddlewares.js";
+import TestRouter from "./Test.js";
 
 const server = async ({
-  port = 80,
+  port,
   development,
 }: {
-  port?: number;
-  development?: boolean;
+  port: number;
+  development: boolean;
 }) => {
   const env = loadEnv(development ? "development" : "production");
   for (const key in server) {
@@ -28,7 +29,7 @@ const server = async ({
   await setup();
   await loadDatabase(app, development);
   await loadApi(app, development ?? false);
-
+  app.use("/test", TestRouter);
   if (development) {
     await dev(app);
   } else {

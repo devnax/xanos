@@ -65,9 +65,7 @@ const config: XanosConfig = {
   database: {
     engine: "sqlite",
 
-    sqlite: {
-      url: "db.sqlite",
-    },
+    sqlite: "db.sqlite",
 
     mysql: {
       host: "",

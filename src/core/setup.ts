@@ -17,7 +17,7 @@ const setup = async () => {
   const slientConfig = {
     name: config.identity.name,
     theme: config.theme,
-    dock: config.dock,
+    dock: config.appearance?.dock,
   };
 
   lines.push(

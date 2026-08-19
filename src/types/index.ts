@@ -64,10 +64,6 @@ export interface XanosAuth {
   };
 }
 
-export interface XanosSQLiteDatabase {
-  url: string;
-}
-
 export interface XanosMySQLDatabase {
   host: string;
   port?: number;
@@ -87,7 +83,7 @@ export interface XanosPostgresDatabase {
 export interface XanosDatabase {
   engine: DatabaseEngine;
 
-  sqlite?: XanosSQLiteDatabase;
+  sqlite?: string;
   mysql?: XanosMySQLDatabase;
   postgres?: XanosPostgresDatabase;
   bridge?: {
