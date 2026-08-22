@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
+
+export const metadata = {
+  title: "Home Page",
+  description: "This is the home page of our application.",
+};
 
 const Home = ({ name, products }: any) => {
-  console.log(__filename);
-
   const [count, setCount] = React.useState(0);
   useEffect(() => {
     const interval = setInterval(() => {

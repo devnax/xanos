@@ -8,7 +8,7 @@ import setup from "../core/setup.js";
 import loadEnv from "../core/env.js";
 import loadApi from "./routes/api/index.js";
 import applyMiddlewares from "./applyMiddlewares.js";
-import TestRouter from "./Test.js";
+import TestRouter, { xanosPage } from "./Test/Test.js";
 
 const server = async ({
   port,
@@ -23,6 +23,7 @@ const server = async ({
   }
 
   const app = express();
+  app.use(xanosPage());
   statics(app, development ?? false);
   await applyMiddlewares(app);
   await loader(app);

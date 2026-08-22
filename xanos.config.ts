@@ -1,6 +1,10 @@
 import { XanosConfig } from "./src";
 
 const config: XanosConfig = {
+  dashboard: {
+    path: "/",
+    allowRoleTypes: ["admin", "organization"],
+  },
   // ─────────────────────────────────────────────
   // OS Identity
   // ─────────────────────────────────────────────

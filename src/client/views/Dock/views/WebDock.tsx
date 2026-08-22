@@ -28,20 +28,16 @@ const AppIcon = ({ app }: { app: any }) => {
       sx={{
         radius: 1,
         mb: 0.3,
-        opacity: isActiveApp ? 1 : 0.8,
         "&:hover": {
           opacity: 1,
-          "& svg": {
-            transform: "scale(1.1)",
-            color: "brand.primary",
-          },
         },
         "& .list-item-text": {
           fontSize: 15,
-          fontWeight: 500,
+          color: isActiveApp ? "text.primary" : "text.secondary",
         },
         "& svg": {
-          fontSize: 20,
+          fontSize: 18,
+          color: isActiveApp ? "text.primary" : "text.secondary",
         },
       }}
     >
@@ -59,7 +55,6 @@ const WebDock = () => {
       height={"100%"}
       width={250}
       flex="0 0 auto"
-      bgcolor="surface.primary"
       shadow={5}
       startContent={
         <Stack p={1} flexRow alignItems={"center"} gap={1} mb={1}>
@@ -74,7 +69,7 @@ const WebDock = () => {
       }
     >
       <Stack px={1}>
-        <List variant={"ghost"} color={"brand"}>
+        <List variant={"ghost"} color={"default"} size="sm">
           {apps.map((app) => (
             <AppIcon key={app.id} app={app} />
           ))}

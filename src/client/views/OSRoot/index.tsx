@@ -125,8 +125,8 @@ const Root = () => {
 
   return (
     <AppRoot theme={theme} height="100vh" width="100vw" position={"relative"}>
-      <AuthForm />
-      {/* <OSRoot /> */}
+      {/* <AuthForm /> */}
+      <OSRoot />
     </AppRoot>
   );
 };
